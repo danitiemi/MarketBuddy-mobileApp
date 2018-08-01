@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Button} from 'react-native';
-import LoginScreen from 'src/Login';
-import MainRouterSwitch from 'src/UserLists';
+import  LoginScreen  from './Login';
+import MainRouterSwitch from './UserLists';
 
 
-export default class LoginSwitch extends Component {
+export default class LoginSwitch extends React.Component {
 
   render() {
     const props = this.props
