@@ -4,6 +4,8 @@ import { LinearGradient, AppLoading, Asset, Font } from 'expo';
 import { Button, Icon } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
 
+
+// ============== 2. LOGIN SWITCH =============== //
 class LoginSwitch extends React.Component {
 
   render() {
@@ -20,10 +22,10 @@ class LoginSwitch extends React.Component {
   }
 }
 
-// FORM
+
+// ================== 2A. LOGIN SCREEN - FORM ===================== //
 const Form = t.form.Form;
 
-// Form model
 const User = t.struct({
   email: t.String,
   password: t.String,
@@ -41,9 +43,17 @@ class LoginScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <Image  */}
-        <View style={styles.container1}>
-          <View style={styles.container2}>
+        <View style={styles.logoContainer}>
+          <Icon name='shopping-cart' type='feather' color='#fff'/>  
+          <Text style={styles.titleText}>Market Buddy</Text>
+          </View>
+            <View style={styles.container1}>
+          {/* <View> */}
+        {/* <View style={styles.image}> */}
+            {/* <Text style={styles.titleText}>Market Buddy</Text>
+            <Icon style={name='shopping_cart'}/> */}
+        {/* <Image source={require('./assets/logo.png')} style={styles.image}/> */}
+              <View style={styles.container2}>
         {/* <LinearGradient
             colors = {['#120038', '#2a37b3', '#727d9c']}
             style = {{
@@ -53,23 +63,24 @@ class LoginScreen extends React.Component {
               top: 0,
               height: 900,
         }}> */}
-          <Form 
-            ref={c => this.loginform = c} 
-            type={User} 
-            options={options} />
-          <Button
-            onPress={this.props.loginHandler}
-            title="LOGIN"
-            // rightIcon={{name: 'telegram-plane'}}
-            style={styles.buttonLogin}
-            backgroundColor= '#195bdd'
-          />
+              <Form 
+                ref={c => this.loginform = c} 
+                type={User} 
+                options={options} />
+              <Button
+                onPress={this.props.loginHandler}
+                title="LOGIN"
+                // rightIcon={{name: 'telegram-plane'}}
+                style={styles.buttonLogin}
+                backgroundColor= '#4f6dc1'
+              />
           {/* <TouchableHighlight
             onPress={this.props.loginHandler}
           >
             <Text>LOGIN</Text> */}
           {/* </TouchableHighlight> */}
         {/* </LinearGradient> */}
+            
           </View>
         </View>
       </View>
@@ -77,6 +88,7 @@ class LoginScreen extends React.Component {
   }
 }
 
+// ============ 2B USER LISTS =============== //
 const ButtonContainer = (props) => {
   const { setScreen } = props
   return (
@@ -100,6 +112,7 @@ const ButtonContainer = (props) => {
   )
 }
 
+// ============= 2A || 3. SHOPPING LIST ============== //
 const SmartScreen = (props) => {
   if (props.screen == "A") {
     return (
@@ -119,6 +132,10 @@ const SmartScreen = (props) => {
     )
   }
 }
+
+
+
+// =============== 3. MAIN ROUTER HOLDER ================ //
 class MainRouterSwitch extends React.Component {
   constructor(props) {
     super(props)
@@ -141,6 +158,9 @@ class MainRouterSwitch extends React.Component {
     )
   }
 }
+
+
+// ============ 1. APP ============ //
 export default class App extends React.Component {
   constructor(props) {
     super(props)
@@ -163,29 +183,35 @@ export default class App extends React.Component {
     );
   }
 }
+
+// =========== STYLES ============= //
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0069ff',
+    backgroundColor: '#2a37b3',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
   },
   container1: {
     // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    height: 280,
+    height: 300,
     width: 300,
+    marginTop: 30,
     borderRadius: 10
   },
   container2: {
-    flex: 1,
+    // flex: 1,
     justifyContent: 'center',
-      // marginTop: 50,
+      // marginTop: 20,
     width: 240,
     // padding: 40,
     backgroundColor: '#fff',
+  },
+  logoContainer: {
+    flexDirection: 'row'
   },
   buttonLogin: {
     borderWidth: 1,
@@ -196,5 +222,11 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     flexDirection: 'row'
-  }
+  },
+  titleText: {
+    fontSize: 28,
+    fontWeight: 'bold',
+    color: '#fff',
+    margin: 15
+  },
 });
