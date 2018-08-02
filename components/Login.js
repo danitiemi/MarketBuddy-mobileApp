@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Button} from 'react-native';
 import MainRouterSwitch from './UserLists';
+import { Button } from 'react-native-elements';
+import t from 'tcomb-form-native';
 
 export class LoginScreen extends React.Component {
 
