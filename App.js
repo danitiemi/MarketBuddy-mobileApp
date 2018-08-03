@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image} from 'react-native';
 import { LinearGradient, AppLoading, Asset, Font } from 'expo';
-import { Button, Icon } from 'react-native-elements';
+import { Button, Icon, Card, ListItem } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
 
 
@@ -48,11 +48,6 @@ class LoginScreen extends React.Component {
           <Text style={styles.titleText}>Market Buddy</Text>
           </View>
             <View style={styles.container1}>
-          {/* <View> */}
-        {/* <View style={styles.image}> */}
-            {/* <Text style={styles.titleText}>Market Buddy</Text>
-            <Icon style={name='shopping_cart'}/> */}
-        {/* <Image source={require('./assets/logo.png')} style={styles.image}/> */}
               <View style={styles.container2}>
         {/* <LinearGradient
             colors = {['#120038', '#2a37b3', '#727d9c']}
@@ -88,41 +83,111 @@ class LoginScreen extends React.Component {
   }
 }
 
-// ============ 2B USER LISTS =============== //
+// ============ 2A USER LISTS =============== //
+const userLists = [
+ {
+    name: 'Weekly Groceries',
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+ },
+ {
+    name: 'Movie Snacks',
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+  },
+  {
+    name: 'Cheat Day',
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+ },
+ {
+    name: 'Detox',
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+  }
+ 
+]
+
+// ==== !!!!!!!! STYLE THE CARDS !!!!! ==== //
 const ButtonContainer = (props) => {
   const { setScreen } = props
   return (
-    <View style={styles.buttonContainer}>
-      <Button
+    <View>
+      <View style={styles.listCards}>
+        { userLists.map((u, i) => {
+          return (
+            <View key={i} style={styles.user}>
+
+            <Card
+              title={u.name}>
+              {/* image={require('./assets/basket.png')}> */}
+              {/* <Text style={{marginBottom: 10}}>
+
+              </Text> */}
+              <Button
+                onPress={() => setScreen(u)}
+                icon={{name: 'code'}}
+                backgroundColor='#4f6dc1'
+                // fontFamily='Lato'
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                title='SHOP!' />
+            </Card>
+            </View>
+          )
+        })
+      }
+      </View>
+
+      
+       {/* <Card title="Pick your List">
+        {
+          userLists.map((u, i) => {
+            return (
+              <View key={i} style={styles.user}>
+                <Image
+                  style={styles.image}
+                  resizeMode="cover"
+                  source={{ uri: u.avatar }}
+                />
+                <Text style={styles.name}>{u.name}</Text>
+              </View>
+            );
+          })
+        } 
+       </Card>
+       </View> */}
+     {/* </View> */}
+    
+    
+    {/* <View style={styles.buttonContainer}> */}
+      
+      {/* <Button
         onPress={() => setScreen("A")}
-        title="A"
+        title="Essentials"
         color="#841584"
       />
       <Button
         onPress={() => setScreen("B")}
-        title="B"
+        title="Movie Snacks"
         color="#841584"
       />
       <Button
         onPress={() => setScreen("C")}
-        title="C"
+        title="Cheat Day"
         color="#841584"
-      />
+      /> */}
+
     </View>
   )
 }
 
-// ============= 2A || 3. SHOPPING LIST ============== //
+// ============= 2 || 3. SHOPPING LIST ============== //
 const SmartScreen = (props) => {
-  if (props.screen == "A") {
+  if (props.screen == userLists[0]) {
     return (
       <Text>YOU ARE AT SCREEN A</Text>
     )  
-  } else if (props.screen == "B") {
+  } else if (props.screen == userLists[1]) {
     return (
       <Text>HEYO IT'S SCREEN B</Text>
     )  
-  } else if (props.screen == "C") {
+  } else if (props.screen == userLists[2]) {
     return (
       <Text>WHAT UP IT'S SCREEN C</Text>
     )  
@@ -134,8 +199,29 @@ const SmartScreen = (props) => {
 }
 
 
+// const SmartScreen = (props) => {
+//   if (props.screen == "A") {
+//     return (
+//       <Text>YOU ARE AT SCREEN A</Text>
+//     )  
+//   } else if (props.screen == "B") {
+//     return (
+//       <Text>HEYO IT'S SCREEN B</Text>
+//     )  
+//   } else if (props.screen == "C") {
+//     return (
+//       <Text>WHAT UP IT'S SCREEN C</Text>
+//     )  
+//   } else {
+//     return (
+//       <Text>YOU DIDN'T PICK ANY SCREEN????</Text>
+//     )
+//   }
+// }
 
-// =============== 3. MAIN ROUTER HOLDER ================ //
+
+
+// =============== 2. MAIN ROUTER HOLDER ================ //
 class MainRouterSwitch extends React.Component {
   constructor(props) {
     super(props)
@@ -229,4 +315,18 @@ const styles = StyleSheet.create({
     color: '#fff',
     margin: 15
   },
+  listContainer: {
+    backgroundColor: '#fff',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  listCards:{
+    backgroundColor: '#2a37b3',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+    // width: 100,
+    // height: 100
+  }
 });
