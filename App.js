@@ -42,22 +42,27 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
+      <View style={styles.mainContainer}>
+        <LinearGradient
+          colors = {['#727d9c', '#2a37b3', '#120038']}
+        //   style = {{
+        //     // position: 'absolute',
+        //     left: 0,
+        //     right: 0,
+        //     // top: 0,
+        //     bottom: 0
+            
+        // }}
+        >
       <View style={styles.container}>
+      
         <View style={styles.logoContainer}>
           <Icon name='shopping-cart' type='feather' color='#fff'/>  
           <Text style={styles.titleText}>Market Buddy</Text>
           </View>
             <View style={styles.container1}>
               <View style={styles.container2}>
-        {/* <LinearGradient
-            colors = {['#120038', '#2a37b3', '#727d9c']}
-            style = {{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              top: 0,
-              height: 900,
-        }}> */}
+        
               <Form 
                 ref={c => this.loginform = c} 
                 type={User} 
@@ -74,11 +79,13 @@ class LoginScreen extends React.Component {
           >
             <Text>LOGIN</Text> */}
           {/* </TouchableHighlight> */}
-        {/* </LinearGradient> */}
+        
             
           </View>
         </View>
       </View>
+    </LinearGradient>
+    </View>
     )
   }
 }
@@ -97,10 +104,10 @@ const userLists = [
     name: 'Cheat Day',
     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
  },
- {
-    name: 'Detox',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-  }
+//  {
+//     name: 'Detox',
+//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+//   }
  
 ]
 
@@ -272,6 +279,12 @@ export default class App extends React.Component {
 
 // =========== STYLES ============= //
 const styles = StyleSheet.create({
+  mainContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    // backgroundColor: '#2a37b3'
+  },
   container: {
     flex: 1,
     backgroundColor: '#2a37b3',
@@ -279,7 +292,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   container1: {
-    // flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
@@ -302,7 +314,6 @@ const styles = StyleSheet.create({
   buttonLogin: {
     borderWidth: 1,
     borderRadius: 4,
-    // marginBottom: 10,
     alignSelf: 'stretch',
     justifyContent: 'center'
   },
