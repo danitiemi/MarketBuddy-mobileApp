@@ -36,9 +36,55 @@ const options = {
   auto: 'placeholders'
 };
 
+async function login() {
+  try {
+    let response = await fetch(
+      'http://192.168.88.120:7000/users/login'
+    );
+    let responseJson = await response.json();
+    return responseJson.user;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 class LoginScreen extends React.Component {
-  handleSubmit() {
-    console.log(this.loginform);
+  // handleSubmit() {
+  //   console.log(this.loginform);
+  // }
+  submitHandle(e){
+    e.preventDefault();
+    var newEmail = e.target[0].value;
+    var newPassword = e.target[1].value;
+
+    var loginRequest = {
+        email: newEmail,
+        password: newPassword
+      };
+    console.log("check loginRequest: ", loginRequest);
+    loginRequest = JSON.stringify(loginRequest);
+    loggedUser= login();
+    consolr.log("check function: ", loggedUser);
+    localStorage.setItem('user', JSON.stringify(loggedUser)); 
+    console.log("check local: ", localStorage);
+    // post('http://192.168.88.120:7000/users/login', {user: loginRequest})
+    //   .then(response => response.data)
+    //   .then(user => {
+    //     if(typeof user === 'string'){
+    //       console.log("The register is not complete", user);
+    //     } else {
+    //       console.log(user.user.lists);
+    //       console.log(user.user);
+    //       localStorage.setItem('user', JSON.stringify(user.user));
+    //       localStorage.setItem('list', JSON.stringify(user.user.lists));
+    //       this.props.history.push({
+    //         pathname: '/user_id'
+    //       })
+    //     }
+    //   })
+    //   .catch(err => {
+    //     console.log("some messed up during the login post", err);
+    //   });
   }
 
   render() {
@@ -62,13 +108,12 @@ class LoginScreen extends React.Component {
               <View style={styles.container2}>
         
               <Form 
-                ref={c => this.loginform = c} 
+                onSubmit={this.submitHandle.bind(this)
                 type={User} 
                 options={options} />
               <Button
-                onPress={this.props.loginHandler}
                 title="LOGIN"
-                // rightIcon={{name: 'telegram-plane'}}
+                type="submit"
                 style={styles.buttonLogin}
                 backgroundColor= '#4f6dc1'
               />
