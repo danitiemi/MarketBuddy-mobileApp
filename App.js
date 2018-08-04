@@ -1,18 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Image} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList} from 'react-native';
 import { LinearGradient, AppLoading, Asset, Font } from 'expo';
 import { Button, Icon, Card, ListItem } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
+import NavBar from './components/Header';
 
 
 // ============== 2. LOGIN SWITCH =============== //
+// 
 class LoginSwitch extends React.Component {
 
   render() {
     const props = this.props
     if (!props.loggedIn) {
       return (
-       <LoginScreen loginHandler={props.loginHandler}/> 
+        <LoginScreen loginHandler={props.loginHandler}/> 
       )
     } else {
       return (
@@ -42,18 +44,15 @@ class LoginScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.mainContainer}>
-        <LinearGradient
-          colors = {['#727d9c', '#2a37b3', '#120038']}
-        //   style = {{
-        //     // position: 'absolute',
-        //     left: 0,
-        //     right: 0,
-        //     // top: 0,
-        //     bottom: 0
-            
-        // }}
-        >
+      <LinearGradient
+        colors = {['#727d9c', '#2a37b3', '#120038']}
+        style = {{
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          top: 0,
+          height: 850
+      }}>
       <View style={styles.container}>
       
         <View style={styles.logoContainer}>
@@ -78,14 +77,11 @@ class LoginScreen extends React.Component {
             onPress={this.props.loginHandler}
           >
             <Text>LOGIN</Text> */}
-          {/* </TouchableHighlight> */}
-        
-            
+          {/* </TouchableHighlight> */} 
           </View>
         </View>
       </View>
     </LinearGradient>
-    </View>
     )
   }
 }
@@ -104,10 +100,10 @@ const userLists = [
     name: 'Cheat Day',
     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
  },
-//  {
-//     name: 'Detox',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-//   }
+ {
+    name: 'Detox',
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+  }
  
 ]
 
@@ -115,7 +111,7 @@ const userLists = [
 const ButtonContainer = (props) => {
   const { setScreen } = props
   return (
-    <View>
+    <View style={styles.mainContainer}>
       <View style={styles.listCards}>
         { userLists.map((u, i) => {
           return (
@@ -141,25 +137,6 @@ const ButtonContainer = (props) => {
       }
       </View>
 
-      
-       {/* <Card title="Pick your List">
-        {
-          userLists.map((u, i) => {
-            return (
-              <View key={i} style={styles.user}>
-                <Image
-                  style={styles.image}
-                  resizeMode="cover"
-                  source={{ uri: u.avatar }}
-                />
-                <Text style={styles.name}>{u.name}</Text>
-              </View>
-            );
-          })
-        } 
-       </Card>
-       </View> */}
-     {/* </View> */}
     
     
     {/* <View style={styles.buttonContainer}> */}
@@ -188,7 +165,18 @@ const ButtonContainer = (props) => {
 const SmartScreen = (props) => {
   if (props.screen == userLists[0]) {
     return (
-      <Text>YOU ARE AT SCREEN A</Text>
+      <View style={styles.container}>
+        <SectionList
+          sections={[
+            {title: 'D', data: ['Devin']},
+            {title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+          ]}
+          renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+          renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
+          keyExtractor={(item, index) => index}
+        />
+     {/* <Text>YOU ARE AT SCREEN A</Text>  */}
+     </View>
     )  
   } else if (props.screen == userLists[1]) {
     return (
@@ -205,30 +193,8 @@ const SmartScreen = (props) => {
   }
 }
 
-
-// const SmartScreen = (props) => {
-//   if (props.screen == "A") {
-//     return (
-//       <Text>YOU ARE AT SCREEN A</Text>
-//     )  
-//   } else if (props.screen == "B") {
-//     return (
-//       <Text>HEYO IT'S SCREEN B</Text>
-//     )  
-//   } else if (props.screen == "C") {
-//     return (
-//       <Text>WHAT UP IT'S SCREEN C</Text>
-//     )  
-//   } else {
-//     return (
-//       <Text>YOU DIDN'T PICK ANY SCREEN????</Text>
-//     )
-//   }
-// }
-
-
-
 // =============== 2. MAIN ROUTER HOLDER ================ //
+
 class MainRouterSwitch extends React.Component {
   constructor(props) {
     super(props)
@@ -244,11 +210,32 @@ class MainRouterSwitch extends React.Component {
   }
   render() {
     return (
-      <View style={styles.container}>
-        <ButtonContainer setScreen={this.setScreen}/>
-        <SmartScreen screen={this.state.currentScreen} />
+      <View style={styles.mainContainer}>
+        < NavBar />
+          {/* <View style={styles.container1> */}
+            <ButtonContainer setScreen={this.setScreen} />
+            <SmartScreen screen={this.state.currentScreen} />
+          {/* </View> */}
       </View>
     )
+  }
+}
+
+//  =============== INDIVIDUAL LIST ================== //
+// ========== render list ============ //
+class ListRender extends React.Component {
+
+  render() {
+    const props = this.props
+    if (props.loggedIn) {
+      return (
+       <LoginScreen loginHandler={props.loginHandler}/> 
+      )
+    } else {
+      return (
+        <MainRouterSwitch />
+      )
+    }
   }
 }
 
@@ -283,11 +270,16 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#2a37b3'
+    backgroundColor: '#3f4bba',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 900,
+    position: 'absolute'
   },
   container: {
     flex: 1,
-    backgroundColor: '#2a37b3',
+    // backgroundColor: '#3f4bba',
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -309,7 +301,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   logoContainer: {
-    flexDirection: 'row'
+    flexDirection: 'row',
+    marginBottom: 23
   },
   buttonLogin: {
     borderWidth: 1,
@@ -333,11 +326,26 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   listCards:{
-    backgroundColor: '#2a37b3',
+    // backgroundColor: '#2a37b3',
     alignItems: 'center',
     justifyContent: 'center',
     marginTop: 30,
     // width: 100,
     // height: 100
-  }
+  },
+  sectionHeader: {
+    paddingTop: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    paddingBottom: 2,
+    fontSize: 14,
+    fontWeight: 'bold',
+    backgroundColor: 'rgba(247,247,247,1.0)',
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
 });
+
