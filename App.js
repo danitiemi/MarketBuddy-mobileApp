@@ -1,9 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList} from 'react-native';
 import { LinearGradient, AppLoading, Asset, Font } from 'expo';
-import { Button, Icon, Card, ListItem } from 'react-native-elements';
+import { Button, Icon, Card, ListItem, Header } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
-import NavBar from './components/Header';
 
 
 // ============== 2. LOGIN SWITCH =============== //
@@ -103,7 +102,11 @@ const userLists = [
  {
     name: 'Detox',
     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-  }
+  },
+  {
+    name: 'Cheat Day',
+    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+ }
  
 ]
 
@@ -112,6 +115,13 @@ const ButtonContainer = (props) => {
   const { setScreen } = props
   return (
     <View style={styles.mainContainer}>
+     <View style={styles.header}>
+      <Header
+        leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
+        centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
+        rightComponent={{ icon: 'menu', color: '#fff' }}
+      />
+      </View>
       <View style={styles.listCards}>
         { userLists.map((u, i) => {
           return (
@@ -119,6 +129,7 @@ const ButtonContainer = (props) => {
 
             <Card
               title={u.name}>
+              backgroundColor='#4f6dc1'
               {/* image={require('./assets/basket.png')}> */}
               {/* <Text style={{marginBottom: 10}}>
 
@@ -207,15 +218,13 @@ class MainRouterSwitch extends React.Component {
     this.setState({
       currentScreen: screen
     })
+    
   }
   render() {
     return (
       <View style={styles.mainContainer}>
-        < NavBar />
-          {/* <View style={styles.container1> */}
-            <ButtonContainer setScreen={this.setScreen} />
-            <SmartScreen screen={this.state.currentScreen} />
-          {/* </View> */}
+        <ButtonContainer setScreen={this.setScreen} />
+        <SmartScreen screen={this.state.currentScreen} />
       </View>
     )
   }
@@ -223,21 +232,7 @@ class MainRouterSwitch extends React.Component {
 
 //  =============== INDIVIDUAL LIST ================== //
 // ========== render list ============ //
-class ListRender extends React.Component {
 
-  render() {
-    const props = this.props
-    if (props.loggedIn) {
-      return (
-       <LoginScreen loginHandler={props.loginHandler}/> 
-      )
-    } else {
-      return (
-        <MainRouterSwitch />
-      )
-    }
-  }
-}
 
 
 // ============ 1. APP ============ //
@@ -270,7 +265,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#3f4bba',
+    // backgroundColor: '#3f4bba',
     top: 0,
     left: 0,
     right: 0,
@@ -326,11 +321,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   listCards:{
-    // backgroundColor: '#2a37b3',
+    flex: 1,
+    backgroundColor: '#e9ebf7',
     alignItems: 'center',
     justifyContent: 'center',
-    marginTop: 30,
-    // width: 100,
+    // marginTop: 30,
+    width: 400,
     // height: 100
   },
   sectionHeader: {
@@ -347,5 +343,8 @@ const styles = StyleSheet.create({
     fontSize: 18,
     height: 44,
   },
+  header: {
+    width: 380,
+  }
 });
 
