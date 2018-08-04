@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollView} from 'react-native';
 import { LinearGradient, AppLoading, Asset, Font } from 'expo';
 import { Button, Icon, Card, ListItem, Header } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
@@ -122,15 +122,16 @@ const ButtonContainer = (props) => {
         rightComponent={{ icon: 'menu', color: '#fff' }}
       />
       </View>
+      {/* <ScrollView> */}
       <View style={styles.listCards}>
         { userLists.map((u, i) => {
           return (
-            <View key={i} style={styles.user}>
+            <View key={i} style={styles.card}>
 
             <Card
               title={u.name}>
+              image={require('./assets/checklist.png')}
               backgroundColor='#4f6dc1'
-              {/* image={require('./assets/basket.png')}> */}
               {/* <Text style={{marginBottom: 10}}>
 
               </Text> */}
@@ -139,14 +140,15 @@ const ButtonContainer = (props) => {
                 icon={{name: 'code'}}
                 backgroundColor='#4f6dc1'
                 // fontFamily='Lato'
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                title='SHOP!' />
+                buttonStyle={{borderRadius: 4, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                title='Pick me' />
             </Card>
             </View>
           )
         })
       }
       </View>
+      {/* </ScrollView> */}
 
     
     
@@ -176,11 +178,25 @@ const ButtonContainer = (props) => {
 const SmartScreen = (props) => {
   if (props.screen == userLists[0]) {
     return (
-      <View style={styles.container}>
+      <View style={styles.listContainer}>
+        {/* <FlatList
+          data={[
+            {key: 'Devin'},
+            {key: 'Jackson'},
+            {key: 'James'},
+            {key: 'Joel'},
+            {key: 'John'},
+            {key: 'Jillian'},
+            {key: 'Jimmy'},
+            {key: 'Julie'},
+          ]}
+          renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
+        />
+         */}
         <SectionList
           sections={[
-            {title: 'D', data: ['Devin']},
-            {title: 'J', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie']},
+            {title: 'D', data: ['Shopping List']},
+            {title: 'Movie Snacks', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie', 'Sam', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam', 'Cris', 'Giovani', 'Leo', 'Dani']},
           ]}
           renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
@@ -188,6 +204,8 @@ const SmartScreen = (props) => {
         />
      {/* <Text>YOU ARE AT SCREEN A</Text>  */}
      </View>
+    //  </ScrollView>
+
     )  
   } else if (props.screen == userLists[1]) {
     return (
@@ -199,7 +217,7 @@ const SmartScreen = (props) => {
     )  
   } else {
     return (
-      <Text>YOU DIDN'T PICK ANY SCREEN????</Text>
+      <Text></Text>
     )
   }
 }
@@ -315,10 +333,11 @@ const styles = StyleSheet.create({
     margin: 15
   },
   listContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: '#e9ebf7',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    width: 380
   },
   listCards:{
     flex: 1,
@@ -345,6 +364,10 @@ const styles = StyleSheet.create({
   },
   header: {
     width: 380,
+  },
+  card: {
+    width: 300,
   }
+   
 });
 
