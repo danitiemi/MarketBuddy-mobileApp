@@ -53,9 +53,16 @@ const options = {
 
 
 class LoginScreen extends React.Component {
+
+  // constructor() {
+  //   super();
+  //   const loginB = "LOGIN";
+
+  // }
+
   handleSubmit() {
 
-    console.log(this.loginform);
+
   }
 
   // submitHandle(){
@@ -109,7 +116,6 @@ class LoginScreen extends React.Component {
   //     }
   //   }
   // }
-
   render() {
     return (
       <LinearGradient
@@ -192,7 +198,7 @@ const ButtonContainer = (props) => {
             <View key={i} style={styles.card}>
 
             <Card
-              title={u.name}>
+              title={u.name}
               image={require('./assets/checklist.png')}
               backgroundColor='#4f6dc1'>
 
