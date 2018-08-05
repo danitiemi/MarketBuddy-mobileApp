@@ -1,7 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollView, AsyncStorage} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollView, AsyncStorage, FlatList} from 'react-native';
 import { LinearGradient, AppLoading, Asset, Font } from 'expo';
-import { Button, Icon, Card, ListItem, Header } from 'react-native-elements';
+import { Button, Icon, Card, ListItem, Header, List } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
 
 
@@ -186,7 +186,6 @@ const ButtonContainer = (props) => {
         rightComponent={{ icon: 'menu', color: '#fff' }}
       />
       </View>
-      {/* <ScrollView> */}
       <View style={styles.listCards}>
         { userLists.map((u, i) => {
           return (
@@ -195,15 +194,12 @@ const ButtonContainer = (props) => {
             <Card
               title={u.name}>
               image={require('./assets/checklist.png')}
-              backgroundColor='#4f6dc1'
-              {/* <Text style={{marginBottom: 10}}>
+              backgroundColor='#4f6dc1'>
 
-              </Text> */}
               <Button
                 onPress={() => setScreen(u)}
                 icon={{name: 'code'}}
                 backgroundColor='#4f6dc1'
-                // fontFamily='Lato'
                 buttonStyle={{borderRadius: 4, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                 title='Pick me' />
             </Card>
@@ -212,27 +208,6 @@ const ButtonContainer = (props) => {
         })
       }
       </View>
-      {/* </ScrollView> */}
-
-    
-    
-    {/* <View style={styles.buttonContainer}> */}
-      
-      {/* <Button
-        onPress={() => setScreen("A")}
-        title="Essentials"
-        color="#841584"
-      />
-      <Button
-        onPress={() => setScreen("B")}
-        title="Movie Snacks"
-        color="#841584"
-      />
-      <Button
-        onPress={() => setScreen("C")}
-        title="Cheat Day"
-        color="#841584"
-      /> */}
 
     </View>
   )
@@ -240,42 +215,61 @@ const ButtonContainer = (props) => {
 
 // ============= 2 || 3. SHOPPING LIST ============== //
 const SmartScreen = (props) => {
-  if (props.screen == userLists[0]) {
+  if (props.screen == userLists[2]) {
     return (
       <View style={styles.listContainer}>
-        {/* <FlatList
-          data={[
-            {key: 'Devin'},
-            {key: 'Jackson'},
-            {key: 'James'},
-            {key: 'Joel'},
-            {key: 'John'},
-            {key: 'Jillian'},
-            {key: 'Jimmy'},
-            {key: 'Julie'},
-          ]}
-          renderItem={({item}) => <Text style={styles.item}>{item.key}</Text>}
-        />
-         */}
+        <View style={styles.header}>
+          <Header
+            leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
+            centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
+            rightComponent={{ icon: 'menu', color: '#fff' }}
+          />
+        </View>
+        
+        <View style={styles.listCards}>
+        <View style={styles.userList}>
+        
         <SectionList
           sections={[
-            {title: 'D', data: ['Shopping List']},
-            {title: 'Movie Snacks', data: ['Jackson', 'James', 'Jillian', 'Jimmy', 'Joel', 'John', 'Julie', 'Sam', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam', 'Cris', 'Giovani', 'Leo', 'Dani']},
+            // {title: 'D', data: ['Shopping List']},
+            {title: 'Movie Snacks', data: ['Popcorn', 'Cheetos', 'Skittles', 'Liquid Honey', 'Pickles', 'M&M', 'Coke', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam']},
           ]}
-          renderItem={({item}) => <Text style={styles.item}>{item}</Text>}
+          // sections= [ 
+          //   {
+          //     id: 0,
+          //     title: 'Safeway',
+          //     userID: 1,
+          //     data: [ 
+          //       {id: 1, name: 'Popcorn', price:'Cheetos'}, 
+          //       // 'Skittles', 'Liquid Honey', 'Pickles', 'M&M', 'Coke', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam']
+          //       // {id: 0, text: 'Guru Nanak Jayanti'},
+          //       // {id: 1, text: 'Guy Fawkess Day'},
+          //       // {id: 2, text: 'Veterans Day observed'},
+          //     ]
+          //   // {title: 'D', data: ['Shopping List']},
+          //   // {title: 'Movie Snacks', data: ['Popcorn', 'Cheetos', 'Skittles', 'Liquid Honey', 'Pickles', 'M&M', 'Coke', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam']},
+          //    } 
+          // ]
+          renderItem={({item}) => 
+            <Text style={styles.item}>
+              {item}
+              <Icon name='shopping-cart' type='feather' color='#fff'/>
+            </Text>}
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
           keyExtractor={(item, index) => index}
+          // containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
         />
-     {/* <Text>YOU ARE AT SCREEN A</Text>  */}
+        {/* </List> */}
+        {/* <Text>YOU ARE AT SCREEN A</Text>  */}
+        </View>
+        </View>
      </View>
-    //  </ScrollView>
-
     )  
   } else if (props.screen == userLists[1]) {
     return (
       <Text>HEYO IT'S SCREEN B</Text>
     )  
-  } else if (props.screen == userLists[2]) {
+  } else if (props.screen == userLists[0]) {
     return (
       <Text>WHAT UP IT'S SCREEN C</Text>
     )  
@@ -284,7 +278,9 @@ const SmartScreen = (props) => {
       <Text></Text>
     )
   }
+  
 }
+
 
 // =============== 2. MAIN ROUTER HOLDER ================ //
 
@@ -403,6 +399,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     width: 380
   },
+  userList: {
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+    // height: 100,
+    width: 350,
+    marginTop: 30,
+    borderRadius: 10,
+    // borderWidth: 1,
+    // marginLeft: 14
+        
+    
+  },
   listCards:{
     flex: 1,
     backgroundColor: '#e9ebf7',
@@ -428,6 +437,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: 380,
+    
   },
   card: {
     width: 300,
