@@ -53,48 +53,62 @@ const options = {
 
 
 class LoginScreen extends React.Component {
-  submitHandle(){
+  handleSubmit() {
 
-    const value = this.loginform.getValue();
-    console.log(value.email);
-    var loginRequest = {
-        email: value.email,
-        password: value.password
-      };
-    console.log("check loginRequest: ", loginRequest);
-    loginRequest = JSON.stringify(loginRequest);
+    console.log(this.loginform);
+  }
+
+  // submitHandle(){
+
+  //   const value = this.loginform.getValue();
+  //   console.log(value.email);
+  //   var loginRequest = {
+  //       email: value.email,
+  //       password: value.password
+  //     };
+  //   console.log("check loginRequest: ", loginRequest);
+    // loginRequest = JSON.stringify(loginRequest);
     // const loggedUser = login(loginRequest);
     // console.log("check function: ", loggedUser);
     // localStorage.setItem('user', JSON.stringify(loggedUser)); 
 
-    fetch('http://192.168.88.120:7000/users/login', {
-      method: 'POST',
-      headers: new Headers({
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      }),
-      body: loginRequest
-    })
-    .then((response) => response.data)
-    .then((response) => {
-      _storeData = async () => {
-        try {
-          await AsyncStorage.setItem('user', response);
-        } catch (error) {
-          console.log("I am an error");
-        }
-      }
-    });
+  //   fetch('https://192.168.88.120:7000/users/login', {
+  //     method: 'POST',
+  //     headers: new Headers({
+  //       Accept: 'application/json',
+  //       'Content-Type': 'application/json, charset=utf-8',
+  //     }),
+  //     cache: "no-cache",
+  //     body: JSON.stringify(loginRequest)
+  //   })
+  //   .then((response) => {
+  //     console.log('RESPONSE', response);
+  //     return response.json()
+  //   })
+  //   .then((user) => {
+      
+  //     console.log('user', user)
+  //     _storeData = async () => {
+  //       try {
+  //         await AsyncStorage.setItem('user', user);
+  //       } catch (error) {
+  //         console.log("I am an error");
+  //       }
+  //     }
+  //   })
+  //   .catch(err=>{
+  //     console.log("ERR", err)
+  //   })
 
-    _retrieveData = async () => {
-      try {
-        const newValue = await AsyncStorage.getItem('user');
-        console.log("check local: ", newValue);
-      } catch (error) {
+  //   _retrieveData = async () => {
+  //     try {
+  //       const newValue = await AsyncStorage.getItem('user');
+  //       console.log("check local: ", newValue);
+  //     } catch (error) {
 
-      }
-    }
-  }
+  //     }
+  //   }
+  // }
 
   render() {
     return (
@@ -118,21 +132,15 @@ class LoginScreen extends React.Component {
         
               <Form 
                 ref={c => this.loginform = c} 
-                // onSubmit={this.submitHandle.bind(this)}
                 type={User} 
                 options={options} />
               <Button
-                onPress={this.submitHandle.bind(this)}
+                // onPress={this.submitHandle.bind(this)}
+                onPress={this.props.loginHandler}
                 title="LOGIN"
-                // type="submit"
                 style={styles.buttonLogin}
                 backgroundColor= '#4f6dc1'
               />
-          {/* <TouchableHighlight
-            onPress={this.props.loginHandler}
-          >
-            <Text>LOGIN</Text> */}
-          {/* </TouchableHighlight> */} 
           </View>
         </View>
       </View>
