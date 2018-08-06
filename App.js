@@ -70,53 +70,19 @@ class LoginScreen extends React.Component {
     // localStorage.setItem('user', JSON.stringify(loggedUser)); 
     post('http://192.168.88.120:7000/users/login', {user: loginRequest})
       // .then(response => response.data)
-
       .then((response) => {
-        //console.log(response.data)
         let userObject = JSON.stringify(response.data.user);
         AsyncStorage.setItem('user', userObject);
-        //console.log(AsyncStorage)
         let newUser = AsyncStorage.getItem('user');
         let userResolved = Promise.resolve(newUser);
         userResolved.then((content) => {
           console.log(content)
+          
         })
         .catch(err=>{
           console.log(err)
         })
-        //console.log("newUser: ", newUser);
-        //console.log(userObject);
-        // let userPromise = AsyncStorage.setItem('user', userObject);
-        //console.log(userPromise)
-        //let userResolved = Promise.resolve(userPromise);
-        // userResolved.then((content) => {
-        //   let newUser = AsyncStorage.getItem('user');
-        //   console.log("newUser: ", newUser);
-        // })
-        // .catch(err=>{
-        //   console.log(err)
-        // })
       })
-
-      // .then(user => {
-      //   console.log("returned user: ", user);
-      //   console.log("email: ", user.user.email);
-
-      //   let userObject = JSON.stringify(user.user);
-
-      //   let userPromise = AsyncStorage.setItem('user', userObject);
-
-      //   let userResolved = Promise.resolve(userPromise);
-
-      //   userResolved.then((result) => {
-      //     console.log("promise result: ", result);
-      //     const newUser = AsyncStorage.getItem('user');
-      //     console.log("newUser: ", newUser);
-      //   }).catch(err => {
-      //     console.log(err);
-      //   })
-
-    // })
     .catch(err=>{
       console.log("ERR", err)
     });
