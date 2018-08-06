@@ -1,81 +1,232 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Button} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  SectionList,
+  TouchableOpacity,
+  SafeAreaView,
+  View
+} from 'react-native';
+import { Button, Icon, Card, ListItem, Header, Divider, CheckBox } from 'react-native-elements';
+import NavBar from './Header';
+import BarcodeScanner from './Scanner';
+import Collapsible from 'react-native-collapsible'; // Version can be specified in package.json
 
+const sections = [
+  {
+    data: [
+      {
+        title: 'List Item 1',
+        price: 13
+      },
+      {
+        title: 'List Item 2',
+        price: 13
+      },
+      {
+        title: 'List Item 3',
+        price: 13
+      },
+      {
+        title: 'List Item 4',
+        price: 13
+      },
+    ],
+    title: 'Safeway',
+  },
+  {
+    data: [
+      {
+        title: 'List Item 1',
+        price: 13
 
-export default class MainRouterSwitch extends React.Component {
-    constructor(props) {
-      super(props)
-      this.state = {
-        currentScreen: ''
-      }
-      this.setScreen = this.setScreen.bind(this)
-    }
-    setScreen(screen) {
-      this.setState({
-        currentScreen: screen
-      })
-    }
-    render() {
-      return (
-        <View style={styles.container}>
-          <ButtonContainer setScreen={this.setScreen}/>
-          <SmartScreen screen={this.state.currentScreen} />
-        </View>
-      )
-    }
-}
+      },
+      {
+        title: 'List Item 2',
+        price: 13
 
-const ButtonContainer = (props) => {
-    const { setScreen } = props
-    return (
-      <View style={styles.buttonContainer}>
-        <Button
-          onPress={() => setScreen("A")}
-          title="A"
-          color="#841584"
-        />
-        <Button
-          onPress={() => setScreen("B")}
-          title="B"
-          color="#841584"
-        />
-        <Button
-          onPress={() => setScreen("C")}
-          title="C"
-          color="#841584"
-        />
-      </View>
-    )
-}
+      },
+      {
+        title: 'List Item 3',
+        price: 13
 
-const SmartScreen = (props) => {
-    if (props.screen == "A") {
-      return (
-        <Text>YOU ARE AT SCREEN A</Text>
-      )  
-    } else if (props.screen == "B") {
-      return (
-        <Text>HEYO IT'S SCREEN B</Text>
-      )  
-    } else if (props.screen == "C") {
-      return (
-        <Text>WHAT UP IT'S SCREEN C</Text>
-      )  
+      },
+      {
+        title: 'List Item 4',
+        price: 13
+
+      },
+    ],
+    title: 'IGA',
+  },
+  {
+    data: [
+      {
+        title: 'List Item 1',
+        price: 13
+
+      },
+      {
+        title: 'List Item 2',
+        price: 13
+
+      },
+      {
+        title: 'List Item 3',
+        price: 13
+
+      },
+      {
+        title: 'List Item 4',
+        price: 13
+
+      },
+    ],
+    title: 'SaveOn Foods',
+  },
+  {
+    data: [
+      {
+        title: 'List Item 1',
+        price: 13
+
+      },
+      {
+        title: 'List Item 2',
+        price: 13
+
+      },
+      {
+        title: 'List Item 3',
+        price: 13
+
+      },
+      {
+        title: 'List Item 4',
+        price: 13
+
+      },
+    ],
+    title: 'T&T',
+  },
+];
+
+export default class ShoppingList extends React.Component {
+  state = {
+    activeSection: '',
+    checked: []
+  };
+
+  onPress = section => {
+    this.setState({
+      activeSection: this.state.activeSection === section.title
+        ? ''
+        : section.title,
+    });
+  };
+
+  checkItem = item => {
+    const { checked } = this.state;
+  
+    console.log(item, 'Item nya');
+    console.log(this.state, 'hereeee')
+  
+    if (!checked.includes(item)) {
+      this.setState({ checked: [...checked, item] });
     } else {
-      return (
-        <Text>YOU DIDN'T PICK ANY SCREEN????</Text>
-      )
+      this.setState({ checked: checked.filter(a => a !== item) });
+      console.log('inside checkitem', item)
+  
     }
+  };
+
+  render() {
+    return (
+      <View style={styles.mainContainer}>
+        <NavBar />
+        <View style={styles.listCards}>
+          <SafeAreaView>
+            <SectionList
+              extraData={this.state}
+              sections={sections}
+              keyExtractor={item => item.title}
+              renderSectionHeader={({ section }) => (
+                <TouchableOpacity onPress={() => this.onPress(section)}>
+                  <View style={styles.sectionContainer}>
+                    <Text style={styles.sectionTitle}>{section.title}</Text>
+                  </View>
+                </TouchableOpacity>
+              )}
+              renderItem={({ item, section }) => (
+                <Collapsible
+                  key={item}
+                  collapsed={section.title !== this.state.activeSection}>
+                  <ListItem 
+                    title={
+                      <CheckBox
+                        title={item.title}
+                        price={item.price}
+
+                        onPress={() => this.checkItem(item)}
+                        checked={this.state.checked.includes(item)}
+                      />
+                    }                         
+                  />
+                  {/* text={<Text>Barcode Scanner</Text>} */}
+                </Collapsible>
+              )}
+            />
+          </SafeAreaView>
+        </View>
+      </View>
+    );
   }
+}
 
 const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      backgroundColor: 'white',
-      alignItems: 'center',
-      justifyContent: 'center',
-    },
-    buttonContainer: {
-      flexDirection: 'row'
-    }
+  mainContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#3f4bba',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 900,
+    position: 'absolute'
+  },
+  listCards:{
+    flex: 1,
+    backgroundColor: '#e9ebf7',
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 400,
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
+  listContainer: {
+    backgroundColor: '#e9ebf7',
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: 380
+  },
+  sectionContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.12)',
+    backgroundColor: '#efefef',
+  },
+  sectionTitle: {
+    color: 'black',
+    fontSize: 20,
+    marginBottom: 8,
+    marginLeft: 30,
+    marginRight: 16,
+    marginTop: 24,
+    opacity: 0.8,
+    width: 250
+  },
 });

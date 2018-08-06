@@ -1,11 +1,10 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import { Header } from 'react-native-elements'
+import { Header, Icon } from 'react-native-elements'
 
 const styles = StyleSheet.create({
   header: {
-    backgroundColor: '#3f4bba',
-    // padding: 20,
+    width: 380,
   },
   title: {
     textAlign: 'center',
@@ -18,11 +17,14 @@ export default class NavBar extends React.Component {
   render() {
     
     return (
-      <Header
-        leftComponent = {{ icon: 'home', color: '#fff' }}
-        centerComponent={{ text: 'Market Buddy', style: { color: '#fff' } }}
-        rightComponent={{ icon: 'menu', color: '#fff' }}
-      />
+      <View style={styles.header}>
+        <Header
+          leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
+          centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
+          rightComponent={{ icon: 'menu', color: '#fff' }}
+        />
+      </View>
     )
   }
 }
+

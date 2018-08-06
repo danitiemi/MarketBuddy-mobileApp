@@ -1,10 +1,14 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollView, AsyncStorage, FlatList} from 'react-native';
+import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollView, AsyncStorage, TouchableOpacity,
+  SafeAreaView,} from 'react-native';
 import { LinearGradient, Asset, Font, Constants } from 'expo';
 import { Button, Icon, Card, ListItem, Header, Divider, CheckBox } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
 import {post} from 'axios';
-
+import Collapsible from 'react-native-collapsible';
+import NavBar from './components/Header';
+import ShoppingList from './components/UserLists';
+import BarcodeScanner from './components/Scanner';
 
 // ============== 2. LOGIN SWITCH =============== //
 // 
@@ -158,13 +162,14 @@ const ButtonContainer = (props) => {
   const { setScreen } = props
   return (
     <View style={styles.mainContainer}>
-      <View style={styles.header}>
+      <NavBar />
+      {/* <View style={styles.header}>
         <Header
           leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
           centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
           rightComponent={{ icon: 'menu', color: '#fff' }}
         />
-      </View>
+      </View> */}
       <View style={styles.listCards}>
         { console.log("userContent check: ", userContent)}
         { console.log("userContent list: ", userContent['lists'])}
@@ -195,7 +200,8 @@ const ButtonContainer = (props) => {
   )
 }
 
-// ============= 2 || 3. SHOPPING LIST ============== //
+
+// ============= 2 || 3 USER's SHOPPING LIST ============== //
 const SECTIONS = [
   {
     data: [
@@ -222,118 +228,85 @@ const SECTIONS = [
     data: [
       {
         title: 'List Item 1',
+        price: 13
+
       },
       {
         title: 'List Item 2',
+        price: 13
+
       },
       {
         title: 'List Item 3',
+        price: 13
+
       },
       {
         title: 'List Item 4',
+        price: 13
+
       },
     ],
-    title: 'SECTION 2',
+    title: 'IGA',
   },
   {
     data: [
       {
         title: 'List Item 1',
+        price: 13
+
       },
       {
         title: 'List Item 2',
+        price: 13
+
       },
       {
         title: 'List Item 3',
+        price: 13
+
       },
       {
         title: 'List Item 4',
+        price: 13
+
       },
     ],
-    title: 'SECTION 3',
+    title: 'SaveOn Foods',
   },
   {
     data: [
       {
         title: 'List Item 1',
+        price: 13
+
       },
       {
         title: 'List Item 2',
+        price: 13
+
       },
       {
         title: 'List Item 3',
+        price: 13
+
       },
       {
         title: 'List Item 4',
+        price: 13
+
       },
     ],
-    title: 'SECTION 4',
+    title: 'T&T',
   },
 ]
-
-function keyExtractor(item) {
-  return item.title
-}
-
-const renderSectionHeader = ({ section }) =>
-  <View style={styles.sectionContainer}>
-    <Text style={styles.sectionTitle}>{section.title}</Text>
-  </View>
-
-state = {
-  checked: [],
-};
-
-
-const renderItem = ({ item }) => 
-  <ListItem title={
-    <CheckBox
-      title={item.title}
-      // {section.price}
-      onPress={() => this.checkItem(item)}
-      checked={this.state.checked.includes(item)}
-    />} 
-  />
-
-checkItem = item => {
-  const { checked } = this.state;
-
-  console.log(item, 'Item nya');
-  console.log(this.state, 'hereeee')
-
-  if (!checked.includes(item)) {
-    this.setState({ checked: [...checked, item] });
-  } else {
-    this.setState({ checked: checked.filter(a => a !== item) });
-    console.log('inside checkitem', item)
-
-  }
-};
-
 
 const SmartScreen = (props) => {
   if (props.screen == userContent.lists[2]) {
     return (
       <View style={styles.listContainer}>
-        <View style={styles.header}>
-          <Header
-            leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
-            centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
-            rightComponent={{ icon: 'menu', color: '#fff' }}
-          />
-        </View>
-        
-        <View style={styles.listCards}>
-        
-        <SectionList
-            extraData={this.state}
-            renderSectionHeader={renderSectionHeader}
-            renderItem={renderItem}
-            sections={SECTIONS}
-            keyExtractor={keyExtractor}
-
-        />
-        </View>
+        <NavBar />
+        <ShoppingList />
      </View>
     )  
   } else if (props.screen == userContent.lists[1]) {
@@ -360,20 +333,17 @@ class MainRouterSwitch extends React.Component {
     super(props)
     this.state = {
       currentScreen: '',
-      checked: []
+      // checked: []
     }
     this.setScreen = this.setScreen.bind(this)
-    // this.checkItem = this.checkItem.bind(this)
   }
 
   setScreen(screen) {
     this.setState({
       currentScreen: screen
     })
-    
   }
 
-  
   render() {
     return (
       <View style={styles.mainContainer}>
@@ -383,11 +353,6 @@ class MainRouterSwitch extends React.Component {
     )
   }
 }
-
-//  =============== INDIVIDUAL LIST ================== //
-// ========== render list ============ //
-
-
 
 // ============ 1. APP ============ //
 export default class App extends React.Component {
@@ -513,6 +478,7 @@ const styles = StyleSheet.create({
   },
   header: {
     width: 380,
+    // fontSize: 36,
     // marginBottom: 10
   },
   card: {
@@ -533,8 +499,16 @@ const styles = StyleSheet.create({
     marginRight: 16,
     marginTop: 24,
     opacity: 0.8,
-    width: 350
+    width: 250
   },
-  
+  contentContainer: {
+    paddingVertical: 20
+  },
+  item: {
+    fontSize: 40,
+    backgroundColor: '#fff',
+    paddingHorizontal: 15,
+    paddingVertical: 8,
+  },
 });
 
