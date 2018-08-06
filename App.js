@@ -81,50 +81,12 @@ class LoginScreen extends React.Component {
         })
         .catch(err=>{
           console.log(err)
-        })
+        });
+        this.props.loginHandler();
       })
     .catch(err=>{
       console.log("ERR", err)
     });
-
-
-
-  // //   fetch('https://192.168.88.120:7000/users/login', {
-  //     method: 'POST',
-  //     headers: new Headers({
-  //       Accept: 'application/json',
-  //       'Content-Type': 'application/json, charset=utf-8',
-  //     }),
-  //     cache: "no-cache",
-  //     body: JSON.stringify(loginRequest)
-  //   })
-  //   .then((response) => {
-  //     console.log('RESPONSE', response);
-  //     return response.json()
-  //   })
-  //   .then((user) => {
-      
-  //     console.log('user', user)
-  //     _storeData = async () => {
-  //       try {
-  //         await AsyncStorage.setItem('user', user);
-  //       } catch (error) {
-  //         console.log("I am an error");
-  //       }
-  //     }
-  //   })
-  //   .catch(err=>{
-  //     console.log("ERR", err)
-  //   })
-
-  //   _retrieveData = async () => {
-  //     try {
-  //       const newValue = await AsyncStorage.getItem('user');
-  //       console.log("check local: ", newValue);
-  //     } catch (error) {
-
-  //     }
-  //   }
   }
 
 
