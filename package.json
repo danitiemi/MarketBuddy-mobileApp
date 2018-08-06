@@ -15,6 +15,7 @@
     "expo-cli": "^1.1.0-beta.5",
     "react": "16.3.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-29.0.0.tar.gz",
+    "react-native-collapsible": "^0.13.0",
     "react-native-elements": "^0.19.1",
     "tcomb-form-native": "^0.6.15"
   }
