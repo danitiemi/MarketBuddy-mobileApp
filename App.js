@@ -114,29 +114,44 @@ class LoginScreen extends React.Component {
 }
 
 // ============ 2A USER LISTS =============== //
-const userLists = [
- {
-    name: 'Weekly Groceries',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
- },
- {
-    name: 'Movie Snacks',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-  },
-  {
-    name: 'Cheat Day',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
- },
- {
-    name: 'Detox',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-  },
-  {
-    name: 'Cheat Day',
-    avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
- }
- 
-]
+const user = AsyncStorage.getItem('user');
+const userPromise = Promise.resolve(user);
+const userContent = {};
+userPromise.then((content) => {
+  // console.log("content: ", content);
+  // console.log("content list: ", content.lists);
+  userContent = JSON.parse(content);
+  // console.log("userContent: ", userContent);
+  
+})
+.catch(err=>{
+  console.log(err)
+});
+
+
+
+// [
+//  {
+//     name: 'Weekly Groceries',
+//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+//  },
+//  {
+//     name: 'Movie Snacks',
+//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+//   },
+//   {
+//     name: 'Cheat Day',
+//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+//  },
+//  {
+//     name: 'Detox',
+//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+//   },
+//   {
+//     name: 'Cheat Day',
+//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
+//  }
+// ]
 
 // ==== !!!!!!!! STYLE THE CARDS !!!!! ==== //
 const ButtonContainer = (props) => {
@@ -151,7 +166,10 @@ const ButtonContainer = (props) => {
         />
       </View>
       <View style={styles.listCards}>
-        { userLists.map((u, i) => {
+        { console.log("userContent check: ", userContent)}
+        { console.log("userContent list: ", userContent['lists'])}
+
+        { userContent.lists.map((u, i) => {
           return (
             <View key={i} style={styles.card}>
 
@@ -294,10 +312,7 @@ checkItem = item => {
 
 
 const SmartScreen = (props) => {
-  // this.state = {
-  //   checked: ["List Item 1"] 
-  // }
-  if (props.screen == userLists[2]) {
+  if (props.screen == userContent.lists[2]) {
     return (
       <View style={styles.listContainer}>
         <View style={styles.header}>
@@ -321,11 +336,11 @@ const SmartScreen = (props) => {
         </View>
      </View>
     )  
-  } else if (props.screen == userLists[1]) {
+  } else if (props.screen == userContent.lists[1]) {
     return (
       <Text>HEYO IT'S SCREEN B</Text>
     )  
-  } else if (props.screen == userLists[0]) {
+  } else if (props.screen == userContent.lists[0]) {
     return (
       <Text>WHAT UP IT'S SCREEN C</Text>
     )  
