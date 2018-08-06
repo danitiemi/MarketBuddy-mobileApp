@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollV
 import { LinearGradient, AppLoading, Asset, Font } from 'expo';
 import { Button, Icon, Card, ListItem, Header, List } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
+import {post} from 'axios';
 
 
 // ============== 2. LOGIN SWITCH =============== //
@@ -54,32 +55,75 @@ const options = {
 
 class LoginScreen extends React.Component {
 
-  // constructor() {
-  //   super();
-  //   const loginB = "LOGIN";
+  submitHandle(){
 
-  // }
-
-  handleSubmit() {
-
-
-  }
-
-  // submitHandle(){
-
-  //   const value = this.loginform.getValue();
-  //   console.log(value.email);
-  //   var loginRequest = {
-  //       email: value.email,
-  //       password: value.password
-  //     };
-  //   console.log("check loginRequest: ", loginRequest);
-    // loginRequest = JSON.stringify(loginRequest);
+    const value = this.loginform.getValue();
+    // console.log(value.email);
+    var loginRequest = {
+        email: value.email,
+        password: value.password
+      };
+    // console.log("check loginRequest: ", loginRequest);
+    loginRequest = JSON.stringify(loginRequest);
     // const loggedUser = login(loginRequest);
     // console.log("check function: ", loggedUser);
     // localStorage.setItem('user', JSON.stringify(loggedUser)); 
+    post('http://192.168.88.120:7000/users/login', {user: loginRequest})
+      // .then(response => response.data)
 
-  //   fetch('https://192.168.88.120:7000/users/login', {
+      .then((response) => {
+        //console.log(response.data)
+        let userObject = JSON.stringify(response.data.user);
+        AsyncStorage.setItem('user', userObject);
+        //console.log(AsyncStorage)
+        let newUser = AsyncStorage.getItem('user');
+        let userResolved = Promise.resolve(newUser);
+        userResolved.then((content) => {
+          console.log(content)
+        })
+        .catch(err=>{
+          console.log(err)
+        })
+        //console.log("newUser: ", newUser);
+        //console.log(userObject);
+        // let userPromise = AsyncStorage.setItem('user', userObject);
+        //console.log(userPromise)
+        //let userResolved = Promise.resolve(userPromise);
+        // userResolved.then((content) => {
+        //   let newUser = AsyncStorage.getItem('user');
+        //   console.log("newUser: ", newUser);
+        // })
+        // .catch(err=>{
+        //   console.log(err)
+        // })
+      })
+
+      // .then(user => {
+      //   console.log("returned user: ", user);
+      //   console.log("email: ", user.user.email);
+
+      //   let userObject = JSON.stringify(user.user);
+
+      //   let userPromise = AsyncStorage.setItem('user', userObject);
+
+      //   let userResolved = Promise.resolve(userPromise);
+
+      //   userResolved.then((result) => {
+      //     console.log("promise result: ", result);
+      //     const newUser = AsyncStorage.getItem('user');
+      //     console.log("newUser: ", newUser);
+      //   }).catch(err => {
+      //     console.log(err);
+      //   })
+
+    // })
+    .catch(err=>{
+      console.log("ERR", err)
+    });
+
+
+
+  // //   fetch('https://192.168.88.120:7000/users/login', {
   //     method: 'POST',
   //     headers: new Headers({
   //       Accept: 'application/json',
@@ -115,7 +159,9 @@ class LoginScreen extends React.Component {
 
   //     }
   //   }
-  // }
+  }
+
+
   render() {
     return (
       <LinearGradient
@@ -141,8 +187,8 @@ class LoginScreen extends React.Component {
                 type={User} 
                 options={options} />
               <Button
-                // onPress={this.submitHandle.bind(this)}
-                onPress={this.props.loginHandler}
+                onPress={this.submitHandle.bind(this)}
+                // onPress={this.props.loginHandler}
                 title="LOGIN"
                 style={styles.buttonLogin}
                 backgroundColor= '#4f6dc1'
