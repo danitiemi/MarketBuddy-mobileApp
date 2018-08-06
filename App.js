@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollView, AsyncStorage, FlatList} from 'react-native';
-import { LinearGradient, AppLoading, Asset, Font } from 'expo';
-import { Button, Icon, Card, ListItem, Header, List } from 'react-native-elements';
+import { LinearGradient, Asset, Font, Constants } from 'expo';
+import { Button, Icon, Card, ListItem, Header, Divider, CheckBox } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
 import {post} from 'axios';
 
@@ -36,22 +36,6 @@ const User = t.struct({
 const options = {
   auto: 'placeholders'
 };
-
-// async function login(loginRequest) {
-//   try {
-//     console.log("in async");
-//     let response = await fetch(
-//       'http://192.168.88.120:7000/users/login',
-//     );
-//     let responseJson = await response.json();
-//     console.log("in fucntion: ", responseJson);
-//     return responseJson.user;
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
-
-
 
 class LoginScreen extends React.Component {
 
@@ -159,12 +143,12 @@ const ButtonContainer = (props) => {
   const { setScreen } = props
   return (
     <View style={styles.mainContainer}>
-     <View style={styles.header}>
-      <Header
-        leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
-        centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
-        rightComponent={{ icon: 'menu', color: '#fff' }}
-      />
+      <View style={styles.header}>
+        <Header
+          leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
+          centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
+          rightComponent={{ icon: 'menu', color: '#fff' }}
+        />
       </View>
       <View style={styles.listCards}>
         { userLists.map((u, i) => {
@@ -194,7 +178,125 @@ const ButtonContainer = (props) => {
 }
 
 // ============= 2 || 3. SHOPPING LIST ============== //
+const SECTIONS = [
+  {
+    data: [
+      {
+        title: 'List Item 1',
+        price: 13
+      },
+      {
+        title: 'List Item 2',
+        price: 13
+      },
+      {
+        title: 'List Item 3',
+        price: 13
+      },
+      {
+        title: 'List Item 4',
+        price: 13
+      },
+    ],
+    title: 'Safeway',
+  },
+  {
+    data: [
+      {
+        title: 'List Item 1',
+      },
+      {
+        title: 'List Item 2',
+      },
+      {
+        title: 'List Item 3',
+      },
+      {
+        title: 'List Item 4',
+      },
+    ],
+    title: 'SECTION 2',
+  },
+  {
+    data: [
+      {
+        title: 'List Item 1',
+      },
+      {
+        title: 'List Item 2',
+      },
+      {
+        title: 'List Item 3',
+      },
+      {
+        title: 'List Item 4',
+      },
+    ],
+    title: 'SECTION 3',
+  },
+  {
+    data: [
+      {
+        title: 'List Item 1',
+      },
+      {
+        title: 'List Item 2',
+      },
+      {
+        title: 'List Item 3',
+      },
+      {
+        title: 'List Item 4',
+      },
+    ],
+    title: 'SECTION 4',
+  },
+]
+
+function keyExtractor(item) {
+  return item.title
+}
+
+const renderSectionHeader = ({ section }) =>
+  <View style={styles.sectionContainer}>
+    <Text style={styles.sectionTitle}>{section.title}</Text>
+  </View>
+
+state = {
+  checked: [],
+};
+
+
+const renderItem = ({ item }) => 
+  <ListItem title={
+    <CheckBox
+      title={item.title}
+      // {section.price}
+      onPress={() => this.checkItem(item)}
+      checked={this.state.checked.includes(item)}
+    />} 
+  />
+
+checkItem = item => {
+  const { checked } = this.state;
+
+  console.log(item, 'Item nya');
+  console.log(this.state, 'hereeee')
+
+  if (!checked.includes(item)) {
+    this.setState({ checked: [...checked, item] });
+  } else {
+    this.setState({ checked: checked.filter(a => a !== item) });
+    console.log('inside checkitem', item)
+
+  }
+};
+
+
 const SmartScreen = (props) => {
+  // this.state = {
+  //   checked: ["List Item 1"] 
+  // }
   if (props.screen == userLists[2]) {
     return (
       <View style={styles.listContainer}>
@@ -207,41 +309,15 @@ const SmartScreen = (props) => {
         </View>
         
         <View style={styles.listCards}>
-        <View style={styles.userList}>
         
         <SectionList
-          sections={[
-            // {title: 'D', data: ['Shopping List']},
-            {title: 'Movie Snacks', data: ['Popcorn', 'Cheetos', 'Skittles', 'Liquid Honey', 'Pickles', 'M&M', 'Coke', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam']},
-          ]}
-          // sections= [ 
-          //   {
-          //     id: 0,
-          //     title: 'Safeway',
-          //     userID: 1,
-          //     data: [ 
-          //       {id: 1, name: 'Popcorn', price:'Cheetos'}, 
-          //       // 'Skittles', 'Liquid Honey', 'Pickles', 'M&M', 'Coke', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam']
-          //       // {id: 0, text: 'Guru Nanak Jayanti'},
-          //       // {id: 1, text: 'Guy Fawkess Day'},
-          //       // {id: 2, text: 'Veterans Day observed'},
-          //     ]
-          //   // {title: 'D', data: ['Shopping List']},
-          //   // {title: 'Movie Snacks', data: ['Popcorn', 'Cheetos', 'Skittles', 'Liquid Honey', 'Pickles', 'M&M', 'Coke', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam']},
-          //    } 
-          // ]
-          renderItem={({item}) => 
-            <Text style={styles.item}>
-              {item}
-              <Icon name='shopping-cart' type='feather' color='#fff'/>
-            </Text>}
-          renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-          keyExtractor={(item, index) => index}
-          // containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
+            extraData={this.state}
+            renderSectionHeader={renderSectionHeader}
+            renderItem={renderItem}
+            sections={SECTIONS}
+            keyExtractor={keyExtractor}
+
         />
-        {/* </List> */}
-        {/* <Text>YOU ARE AT SCREEN A</Text>  */}
-        </View>
         </View>
      </View>
     )  
@@ -268,21 +344,26 @@ class MainRouterSwitch extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentScreen: ''
+      currentScreen: '',
+      checked: []
     }
     this.setScreen = this.setScreen.bind(this)
+    // this.checkItem = this.checkItem.bind(this)
   }
+
   setScreen(screen) {
     this.setState({
       currentScreen: screen
     })
     
   }
+
+  
   render() {
     return (
       <View style={styles.mainContainer}>
         <ButtonContainer setScreen={this.setScreen} />
-        <SmartScreen screen={this.state.currentScreen} />
+        <SmartScreen screen={this.state.currentScreen}  />
       </View>
     )
   }
@@ -383,13 +464,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
-    // height: 100,
     width: 350,
     marginTop: 30,
     borderRadius: 10,
     // borderWidth: 1,
     // marginLeft: 14
-        
+    flex: 1,
+    paddingTop: Constants.statusBarHeight,
     
   },
   listCards:{
@@ -417,11 +498,28 @@ const styles = StyleSheet.create({
   },
   header: {
     width: 380,
-    
+    // marginBottom: 10
   },
   card: {
     width: 300,
-  }
-   
+    // marginTop: 8,
+
+  },
+  sectionContainer: {
+    borderBottomWidth: 1,
+    borderBottomColor: 'rgba(0, 0, 0, 0.12)',
+    backgroundColor: '#efefef',
+  },
+  sectionTitle: {
+    color: 'black',
+    fontSize: 14,
+    marginBottom: 8,
+    marginLeft: 16,
+    marginRight: 16,
+    marginTop: 24,
+    opacity: 0.8,
+    width: 350
+  },
+  
 });
 
