@@ -9,7 +9,6 @@ import {login, getListFromTheInternet} from './api-svc';
 
 // ================== 2A. LOGIN SCREEN - FORM ===================== //
 const Form = t.form.Form;
-
 const options = {
   auto: 'placeholders'
 };
@@ -17,7 +16,6 @@ const options = {
 class LoginScreen extends React.Component {
 
   async submitHandle(){
-
     const value = this.loginform.getValue();
     this.props.attemptLogin(value.email, value.password);
   }
@@ -48,7 +46,6 @@ class LoginScreen extends React.Component {
                 options={options} />
               <Button
                 onPress={this.submitHandle.bind(this)}
-                // onPress={this.props.loginHandler}
                 title="LOGIN"
                 style={styles.buttonLogin}
                 backgroundColor= '#4f6dc1'
@@ -84,9 +81,7 @@ const ButtonContainer = (props) => {
       />
       </View>
       <View style={styles.listCards}>
-        {/* { console.log("userContent check: ", userContent)}
-        { console.log("userContent list: ", userContent['lists'])} */}
-
+      <ScrollView>
         { userContent.lists.map((u, i) => {
           return (
             <View key={i} style={styles.card}>
@@ -107,8 +102,8 @@ const ButtonContainer = (props) => {
           )
         })
       }
+      </ScrollView>
       </View>
-
     </View>
   )
 }
@@ -120,17 +115,15 @@ class RenderList extends React.Component{
     this.state = {productArray: [], listTitle: ''}
   }
   componentDidMount() {
-
     const listPromise = AsyncStorage.getItem('listArray');
 
     listPromise.then((content) => {
-      // console.log("list response: ", content);
       let parse = JSON.parse(content);
-
       listContent = parse.products;
       listTitle = parse.name;
       this.setState({productArray: parse.products, listTitle: parse.name});
     })
+
   }
   render(){
     return (
@@ -180,7 +173,6 @@ const SmartScreen = (props) => {
         
         <SectionList
           sections={[
-            // {title: 'D', data: ['Shopping List']},
             {title: 'Movie Snacks', data: ['Popcorn', 'Cheetos', 'Skittles', 'Liquid Honey', 'Pickles', 'M&M', 'Coke', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam']},
           ]}
           renderItem={({item}) => 
@@ -190,17 +182,15 @@ const SmartScreen = (props) => {
             </Text>}
           renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
           keyExtractor={(item, index) => index}
-          // containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}
         />
-        {/* </List> */}
-        {/* <Text>YOU ARE AT SCREEN A</Text>  */}
         </View>
         </View>
      </View>
     )  
   } else if (props.screen == userContent.lists[1]) {
     return (
-      <Text>HEYO IT'S SCREEN B</Text>
+      // <Text>HEYO IT'S SCREEN B</Text>
+      <RenderList/>
     )  
   } else if (props.screen == userContent.lists[0]) {
     return <RenderList/>
@@ -208,10 +198,8 @@ const SmartScreen = (props) => {
     return (
       <Text></Text>
     )
-  }
-  
+  }  
 }
-
 
 // =============== 2. MAIN ROUTER HOLDER ================ //
 
@@ -227,19 +215,6 @@ class MainRouterSwitch extends React.Component {
     this.setState({
       currentScreen: screen
     })
-
-  //   let list = listId; 
-  //   let url = 'http://192.168.88.120:7000/lists/' + list;
-  //   get(url)
-  //   .then((response) => {
-  //     let listObject = JSON.stringify(response.data);
-  //     // console.log("list object: ", JSON.parse(listObject).products);
-  //     AsyncStorage.setItem('listArray', listObject);
-  //   })
-  // .catch(err=>{
-  //   console.log("ERR", err)
-  // });
-    
   }
   render() {
     return (
@@ -252,9 +227,6 @@ class MainRouterSwitch extends React.Component {
 }
 
 //  =============== INDIVIDUAL LIST ================== //
-// ========== render list ============ //
-
-
 
 // ============ 1. APP ============ //
 
