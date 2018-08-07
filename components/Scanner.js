@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { BarCodeScanner, Permissions } from 'expo';
 
+
 export default class BarcodeScanner extends React.Component {
   state = {
     hasCameraPermission: null,
@@ -29,6 +30,12 @@ export default class BarcodeScanner extends React.Component {
         </View>
       );
     }
+  }
+
+  function delay(time) {
+    return new Promise(function(resolve, reject) {
+      setTimeout(() => resolve(), time);
+    });
   }
 
   _handleBarCodeRead = ({ type, data }) => {

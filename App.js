@@ -132,48 +132,16 @@ userPromise.then((content) => {
   console.log(err)
 });
 
-
-
-// [
-//  {
-//     name: 'Weekly Groceries',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-//  },
-//  {
-//     name: 'Movie Snacks',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-//   },
-//   {
-//     name: 'Cheat Day',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-//  },
-//  {
-//     name: 'Detox',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-//   },
-//   {
-//     name: 'Cheat Day',
-//     avatar: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg'
-//  }
-// ]
-
 // ==== !!!!!!!! STYLE THE CARDS !!!!! ==== //
 const ButtonContainer = (props) => {
   const { setScreen } = props
   return (
     <View style={styles.mainContainer}>
       <NavBar />
-      {/* <View style={styles.header}>
-        <Header
-          leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
-          centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
-          rightComponent={{ icon: 'menu', color: '#fff' }}
-        />
-      </View> */}
       <View style={styles.listCards}>
         { console.log("userContent check: ", userContent)}
         { console.log("userContent list: ", userContent['lists'])}
-
+        {/* <ScrollView> */}
         { userContent.lists.map((u, i) => {
           return (
             <View key={i} style={styles.card}>
@@ -181,6 +149,7 @@ const ButtonContainer = (props) => {
             <Card
               title={u.name}
               image={require('./assets/checklist.png')}
+              // fontFamily='Roboto'
               backgroundColor='#4f6dc1'>
 
               <Button
@@ -194,6 +163,7 @@ const ButtonContainer = (props) => {
           )
         })
       }
+      {/* </ScrollView> */}
       </View>
 
     </View>
@@ -309,14 +279,6 @@ const SmartScreen = (props) => {
         <ShoppingList />
      </View>
     )  
-  } else if (props.screen == userContent.lists[1]) {
-    return (
-      <Text>HEYO IT'S SCREEN B</Text>
-    )  
-  } else if (props.screen == userContent.lists[0]) {
-    return (
-      <Text>WHAT UP IT'S SCREEN C</Text>
-    )  
   } else {
     return (
       <Text></Text>
@@ -325,7 +287,6 @@ const SmartScreen = (props) => {
   
 }
 
-
 // =============== 2. MAIN ROUTER HOLDER ================ //
 
 class MainRouterSwitch extends React.Component {
@@ -333,7 +294,6 @@ class MainRouterSwitch extends React.Component {
     super(props)
     this.state = {
       currentScreen: '',
-      // checked: []
     }
     this.setScreen = this.setScreen.bind(this)
   }
