@@ -28,7 +28,6 @@ class LoginSwitch extends React.Component {
   }
 }
 
-
 // ================== 2A. LOGIN SCREEN - FORM ===================== //
 const Form = t.form.Form;
 
@@ -46,7 +45,6 @@ class LoginScreen extends React.Component {
   submitHandle(){
 
     const value = this.loginform.getValue();
-    // console.log(value.email);
     var loginRequest = {
         email: value.email,
         password: value.password
@@ -64,7 +62,7 @@ class LoginScreen extends React.Component {
         let newUser = AsyncStorage.getItem('user');
         let userResolved = Promise.resolve(newUser);
         userResolved.then((content) => {
-          console.log(content)
+          console.log('promise loginScreen', content)
           
         })
         .catch(err=>{
@@ -94,21 +92,22 @@ class LoginScreen extends React.Component {
         <View style={styles.logoContainer}>
           <Icon name='shopping-cart' type='feather' color='#fff'/>  
           <Text style={styles.titleText}>Market Buddy</Text>
-          </View>
-            <View style={styles.container1}>
-              <View style={styles.container2}>
-        
-              <Form 
-                ref={c => this.loginform = c} 
-                type={User} 
-                options={options} />
-              <Button
-                onPress={this.submitHandle.bind(this)}
-                // onPress={this.props.loginHandler}
-                title="LOGIN"
-                style={styles.buttonLogin}
-                backgroundColor= '#4f6dc1'
-              />
+        </View>
+
+        <View style={styles.container1}>
+          <View style={styles.container2}>
+    
+            <Form 
+              ref={c => this.loginform = c} 
+              type={User} 
+              options={options} />
+            <Button
+              onPress={this.submitHandle.bind(this)}
+              // onPress={this.props.loginHandler}
+              title="LOGIN"
+              style={styles.buttonLogin}
+              backgroundColor= '#4f6dc1'
+            />
           </View>
         </View>
       </View>
@@ -149,7 +148,6 @@ const ButtonContainer = (props) => {
             <Card
               title={u.name}
               image={require('./assets/checklist.png')}
-              // fontFamily='Roboto'
               backgroundColor='#4f6dc1'>
 
               <Button
@@ -172,104 +170,7 @@ const ButtonContainer = (props) => {
 
 
 // ============= 2 || 3 USER's SHOPPING LIST ============== //
-const SECTIONS = [
-  {
-    data: [
-      {
-        title: 'List Item 1',
-        price: 13
-      },
-      {
-        title: 'List Item 2',
-        price: 13
-      },
-      {
-        title: 'List Item 3',
-        price: 13
-      },
-      {
-        title: 'List Item 4',
-        price: 13
-      },
-    ],
-    title: 'Safeway',
-  },
-  {
-    data: [
-      {
-        title: 'List Item 1',
-        price: 13
 
-      },
-      {
-        title: 'List Item 2',
-        price: 13
-
-      },
-      {
-        title: 'List Item 3',
-        price: 13
-
-      },
-      {
-        title: 'List Item 4',
-        price: 13
-
-      },
-    ],
-    title: 'IGA',
-  },
-  {
-    data: [
-      {
-        title: 'List Item 1',
-        price: 13
-
-      },
-      {
-        title: 'List Item 2',
-        price: 13
-
-      },
-      {
-        title: 'List Item 3',
-        price: 13
-
-      },
-      {
-        title: 'List Item 4',
-        price: 13
-
-      },
-    ],
-    title: 'SaveOn Foods',
-  },
-  {
-    data: [
-      {
-        title: 'List Item 1',
-        price: 13
-
-      },
-      {
-        title: 'List Item 2',
-        price: 13
-
-      },
-      {
-        title: 'List Item 3',
-        price: 13
-
-      },
-      {
-        title: 'List Item 4',
-        price: 13
-
-      },
-    ],
-    title: 'T&T',
-  },
-]
 
 const SmartScreen = (props) => {
   if (props.screen == userContent.lists[2]) {
@@ -342,20 +243,18 @@ export default class App extends React.Component {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    alignItems: 'center',
     justifyContent: 'center',
-    // backgroundColor: '#3f4bba',
     top: 0,
     left: 0,
     right: 0,
-    height: 900,
+    height: 1000,
     position: 'absolute'
   },
   container: {
     flex: 1,
-    // backgroundColor: '#3f4bba',
+    paddingTop: 100,
     alignItems: 'center',
-    justifyContent: 'center',
+    // justifyContent: 'center',
   },
   container1: {
     backgroundColor: '#fff',
@@ -377,6 +276,7 @@ const styles = StyleSheet.create({
   logoContainer: {
     flexDirection: 'row',
     marginBottom: 23
+    
   },
   buttonLogin: {
     borderWidth: 1,

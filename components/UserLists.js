@@ -4,118 +4,27 @@ import {
   StyleSheet,
   SectionList,
   TouchableOpacity,
+  TouchableHighlight,
   SafeAreaView,
-  View
+  View,
+  Image,
+  ScrollView
 } from 'react-native';
 import { Button, Icon, Card, ListItem, Header, Divider, CheckBox } from 'react-native-elements';
 import NavBar from './Header';
 import BarcodeScanner from './Scanner';
 import Collapsible from 'react-native-collapsible'; // Version can be specified in package.json
 
-const sections = [
-  {
-    data: [
-      {
-        title: 'List Item 1',
-        price: 13
-      },
-      {
-        title: 'List Item 2',
-        price: 13
-      },
-      {
-        title: 'List Item 3',
-        price: 13
-      },
-      {
-        title: 'List Item 4',
-        price: 13
-      },
-    ],
-    title: 'Safeway',
-  },
-  {
-    data: [
-      {
-        title: 'List Item 1',
-        price: 13
-
-      },
-      {
-        title: 'List Item 2',
-        price: 13
-
-      },
-      {
-        title: 'List Item 3',
-        price: 13
-
-      },
-      {
-        title: 'List Item 4',
-        price: 13
-
-      },
-    ],
-    title: 'IGA',
-  },
-  {
-    data: [
-      {
-        title: 'List Item 1',
-        price: 13
-
-      },
-      {
-        title: 'List Item 2',
-        price: 13
-
-      },
-      {
-        title: 'List Item 3',
-        price: 13
-
-      },
-      {
-        title: 'List Item 4',
-        price: 13
-
-      },
-    ],
-    title: 'SaveOn Foods',
-  },
-  {
-    data: [
-      {
-        title: 'List Item 1',
-        price: 13
-
-      },
-      {
-        title: 'List Item 2',
-        price: 13
-
-      },
-      {
-        title: 'List Item 3',
-        price: 13
-
-      },
-      {
-        title: 'List Item 4',
-        price: 13
-
-      },
-    ],
-    title: 'T&T',
-  },
-];
 
 export default class ShoppingList extends React.Component {
-  state = {
-    activeSection: '',
-    checked: []
-  };
+  constructor (props) {
+    super(props);
+    this.state = {
+      scannerOn: false,
+      activeSection: '',
+      checked: [],
+    };
+  }
 
   onPress = section => {
     this.setState({
@@ -125,12 +34,13 @@ export default class ShoppingList extends React.Component {
     });
   };
 
+  openScanner = () => {
+    this.setState({ scannerOn: true })
+  }
+
   checkItem = item => {
     const { checked } = this.state;
-  
-    console.log(item, 'Item nya');
-    console.log(this.state, 'hereeee')
-  
+    
     if (!checked.includes(item)) {
       this.setState({ checked: [...checked, item] });
     } else {
@@ -144,44 +54,61 @@ export default class ShoppingList extends React.Component {
     return (
       <View style={styles.mainContainer}>
         <NavBar />
+        <TouchableHighlight>
+          <View style={styles.scanner}>
+            {/* <Image source={require('./assets/camera.png')} /> */}
+            <Button
+              backgroundColor='#e9ebf7'
+              color='#000'
+              accessibilityLabel="Update your product"
+              onPress={() => this.openScanner() } 
+              title="Update your product."
+              style={styles.button}
+              />
+            {this.state.scannerOn && <BarcodeScanner /> }
+          </View>
+        </TouchableHighlight> 
+
         <View style={styles.listCards}>
           <SafeAreaView>
-            <SectionList
-              extraData={this.state}
-              sections={sections}
-              keyExtractor={item => item.title}
-              renderSectionHeader={({ section }) => (
-                <TouchableOpacity onPress={() => this.onPress(section)}>
-                  <View style={styles.sectionContainer}>
-                    <Text style={styles.sectionTitle}>{section.title}</Text>
-                  </View>
-                </TouchableOpacity>
-              )}
-              renderItem={({ item, section }) => (
-                <Collapsible
-                  key={item}
-                  collapsed={section.title !== this.state.activeSection}>
-                  <ListItem 
-                    title={
-                      <CheckBox
-                        title={item.title}
-                        price={item.price}
-
-                        onPress={() => this.checkItem(item)}
-                        checked={this.state.checked.includes(item)}
-                      />
-                    }                         
-                  />
-                  {/* text={<Text>Barcode Scanner</Text>} */}
-                </Collapsible>
-              )}
-            />
+            <ScrollView style={styles.scroll}>
+              <SectionList
+                extraData={this.state}
+                sections={sections}
+                keyExtractor={item => item.title}
+                renderSectionHeader={({ section }) => (
+                  <TouchableOpacity onPress={() => this.onPress(section)}>
+                    <View style={styles.sectionContainer}>
+                      <Text style={styles.sectionTitle}>{section.title}</Text>
+                    </View>
+                  </TouchableOpacity>
+                )}
+                renderItem={({ item, section }) => (
+                  <Collapsible
+                    key={item}
+                    collapsed={section.title !== this.state.activeSection}>
+                    <ListItem 
+                      title={
+                        <CheckBox
+                          title={item.title}
+                          onPress={() => this.checkItem(item)}
+                          checked={this.state.checked.includes(item)}
+                        />
+                      }
+                      badge={{ value: `\$ ${item.price.toFixed(2)}`, textStyle: { color: 'black' }, containerStyle: { alignSelf: 'center', backgroundColor: 'grey', margin: 20 } }}
+                      hideChevron={true}                           
+                    />
+                  </Collapsible>
+                )}
+              />
+            </ScrollView>
           </SafeAreaView>
         </View>
       </View>
     );
   }
 }
+
 
 const styles = StyleSheet.create({
   mainContainer: {
@@ -208,7 +135,7 @@ const styles = StyleSheet.create({
     height: 44,
   },
   listContainer: {
-    backgroundColor: '#e9ebf7',
+    // backgroundColor: '#e9ebf7',
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
@@ -228,5 +155,23 @@ const styles = StyleSheet.create({
     marginTop: 24,
     opacity: 0.8,
     width: 250
+  },
+  scanner: {
+    backgroundColor: '#e9ebf7',
+    width: 300,
+    height: 170,
+    marginTop: 10,
+    marginBottom: 10,
+    padding: 20,
+    
+  },
+  button: {
+    // height: 170,
+    position: 'relative',
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+  },
+  scroll: {
+    flexDirection: 'column'
   },
 });
