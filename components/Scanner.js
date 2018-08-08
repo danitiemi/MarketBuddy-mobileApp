@@ -18,7 +18,7 @@ export default class BarcodeScanner extends React.Component {
     await delay(500);
     if (this.state.read == obj.data) return;
     this.setState({ read: obj.data });
-    alert(`Bar code with type ${obj.type} and data ${obj.data} has been scanned!`);
+    // alert(`Bar code with type ${obj.type} and data ${obj.data} has been scanned!`);
     alert('Your product have been updated!')
   };
 

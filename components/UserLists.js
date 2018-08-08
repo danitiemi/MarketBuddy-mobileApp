@@ -17,6 +17,7 @@ import NavBar from './Header';
 import BarcodeScanner from './Scanner';
 
 
+
 export default class ShoppingList extends React.Component {
   constructor (props) {
     super(props);
@@ -58,7 +59,39 @@ export default class ShoppingList extends React.Component {
 
   // ======== PLAN B =============== //
 
+//   componentDidMount() {
+//     this.makeRemoteRequest();
+//   }
 
+//   makeRemoteRequest = () => {
+//     const { page, seed } = this.state;
+//     const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
+//     this.setState({ loading: true });
+//     fetch(url)
+//       .then(res => res.json())
+//       .then(res => {
+//         this.setState({
+//           data: page === 1 ? res.results : [...this.state.data, ...res.results],
+//           error: res.error || null,
+//           loading: false,
+//           refreshing: false
+//         });
+//       })
+//       .catch(error => {
+//         this.setState({ error, loading: false });
+//       });
+//   };
+
+//   render() {
+//     return (
+//       <List>
+//       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+//         <Text>Coming soon...</Text>
+//       </View>
+//       </List>
+//     );
+//   }
+// }
 
 //  ======== END OF PLAN B ========= //
 
@@ -78,7 +111,7 @@ export default class ShoppingList extends React.Component {
               color='#000'
               accessibilityLabel="Update your product"
               onPress={() => this.openScanner() } 
-              title="Update your product."
+              title="Different price? Add the new price below and scan your product here to update it."
               style={styles.button}
               />
             {this.state.scannerOn && <BarcodeScanner /> }
@@ -86,29 +119,29 @@ export default class ShoppingList extends React.Component {
         </TouchableHighlight> 
 
         <View style={styles.inputText}>
-          <Button
+          {/* <Button
             backgroundColor='#e9ebf7'
             color='#000'
             accessibilityLabel="Update your product"
             onPress={() => this.openScanner() }
-            icon={{name: 'camera', color: '#000'}}
-            title="Scan"
-            style={{height: 40, borderColor: 'gray'}}
-          />
+            // icon={{name: 'camera', color: '#000'}}
+            title="SCAN"
+            style={{height: 42, borderColor: 'gray'}}
+          /> */}
           <TextInput
             placeholder={'New price here'}
-            style={{height: 42, borderColor: 'gray', borderWidth: 1, backgroundColor: '#e9ebf7'}}
+            style={{height: 42, borderColor: 'gray', borderWidth: 1, backgroundColor: '#e9ebf7', width: 120}}
             onChangeText={(text) => this.setState({text})}
             value={this.state.text}
           />
           <Button
             backgroundColor='#e9ebf7'
             color='#000'
-            accessibilityLabel="Update your product"
+            accessibilityLabel="Different price? Add the new price above and scan your product here to update it."
             onPress={() => this.openScanner() } 
-            title="send"
-            style={{height: 40, borderColor: 'gray'}}
-          />
+            title="SEND"
+            style={{height: 42, borderColor: 'gray'}}
+          /> 
         </View>
 
 
@@ -139,7 +172,7 @@ export default class ShoppingList extends React.Component {
                   renderItem={({item, index, section}) => {
 
                       let data = item ? item[index].name : 'Loading';
-                      return <Text key={index}>{data}</Text>
+                      return <Text style={styles.titleText} key={index}>{data}</Text>
                   
                   // <View>
                   //   <Collapsible
@@ -279,5 +312,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: 40,
     marginBottom: 8
-  }
+  },
+  titleText: {
+    fontSize: 20,
+    // fontWeight: 'bold',
+    color: '#000',
+    margin: 15
+  },
 });
