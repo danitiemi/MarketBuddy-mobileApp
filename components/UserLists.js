@@ -40,6 +40,7 @@ const sections = [
         title: 'List Item 1',
         price: 13
 
+<<<<<<< HEAD
       },
       {
         title: 'List Item 2',
@@ -125,6 +126,22 @@ export default class ShoppingList extends React.Component {
     });
   };
 
+=======
+export default class ShoppingList extends React.Component {
+  state = {
+    activeSection: '',
+    checked: []
+  };
+
+  onPress = section => {
+    this.setState({
+      activeSection: this.state.activeSection === section.title
+        ? ''
+        : section.title,
+    });
+  };
+
+>>>>>>> e3c881c... slightly less stupid now
   checkItem = item => {
     const { checked } = this.state;
   
