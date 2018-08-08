@@ -36,8 +36,25 @@ const User = t.struct({
   password: t.String,
 });
 
-const options = {
-  auto: 'placeholders'
+// ============= NEW: HIDE PASSWORD ================== //
+var options = {
+  
+  fields: {
+      email: {
+          // placeholder: t.t('Email'),
+          auto: 'placeholders',
+          // error: t.t('Email is empty'),
+          // template: (locals) => textbox(locals, ),
+      },
+      password: {
+          // placeholder: t.t('Password'),
+          auto: 'placeholders',
+          // error: t.t('Password is empty'),
+          password: true,
+          secureTextEntry: true,
+          // template: (locals) => textbox(locals, ), // <--- Here you have to pass the PasswordTemplate
+      }
+  }
 };
 
 class LoginScreen extends React.Component {
@@ -62,7 +79,7 @@ class LoginScreen extends React.Component {
         let newUser = AsyncStorage.getItem('user');
         let userResolved = Promise.resolve(newUser);
         userResolved.then((content) => {
-          console.log('promise loginScreen', content)
+          console.log('promise loginScreen',content)
           
         })
         .catch(err=>{
@@ -220,7 +237,7 @@ export default class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      loggedIn: false
+      loggedIn: false,
     }
     this.setLogin = this.setLogin.bind(this)
   }
