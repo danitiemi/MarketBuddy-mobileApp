@@ -1,11 +1,17 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollView, AsyncStorage, FlatList} from 'react-native';
-import { LinearGradient, AppLoading, Asset, Font } from 'expo';
-import { Button, Icon, Card, ListItem, Header, List } from 'react-native-elements';
+import { StyleSheet, Text, View, TouchableHighlight, Image, SectionList, ScrollView, AsyncStorage, TouchableOpacity,
+  SafeAreaView,} from 'react-native';
+import { LinearGradient, Asset, Font, Constants } from 'expo';
+import { Button, Icon, Card, ListItem, Header, Divider, CheckBox } from 'react-native-elements';
 import t from 'tcomb-form-native'; // 0.6.15
 import {User} from './models';
 import styles from './styles'
 import {login, getListFromTheInternet} from './api-svc';
+import {post} from 'axios';
+import Collapsible from 'react-native-collapsible';
+import NavBar from './components/Header';
+import ShoppingList from './components/UserLists';
+import BarcodeScanner from './components/Scanner';
 
 // ================== 2A. LOGIN SCREEN - FORM ===================== //
 const Form = t.form.Form;
@@ -16,7 +22,10 @@ const options = {
 class LoginScreen extends React.Component {
 
   async submitHandle(){
-    const value = this.loginform.getValue();
+    // const value = this.loginform.getValue();
+    let value = {};
+    value.email = 'root@root.com';
+    value.password = 'root';
     this.props.attemptLogin(value.email, value.password);
   }
 
@@ -70,19 +79,14 @@ userPromise.then((content) => {
 
 // ==== !!!!!!!! STYLE THE CARDS !!!!! ==== //
 const ButtonContainer = (props) => {
-  const { setScreen } = props
+  const { setScreen } = props;
+  // console.log("button props: ", props);
   return (
     <View style={styles.mainContainer}>
-     <View style={styles.header}>
-      <Header
-        leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
-        centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
-        rightComponent={{ icon: 'menu', color: '#fff' }}
-      />
-      </View>
+      <NavBar />
       <View style={styles.listCards}>
       <ScrollView>
-        { userContent.lists.map((u, i) => {
+        { props.userList.map((u, i) => {
           return (
             <View key={i} style={styles.card}>
 
@@ -92,13 +96,13 @@ const ButtonContainer = (props) => {
               backgroundColor='#4f6dc1'>
 
               <Button
-                onPress={() => setScreen(u, u.id)}
+                onPress={() => setScreen(u.id)}
                 icon={{name: 'code'}}
                 backgroundColor='#4f6dc1'
                 buttonStyle={{borderRadius: 4, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                 title='Pick me' />
             </Card>
-            </View>
+             </View> 
           )
         })
       }
@@ -112,20 +116,19 @@ const ButtonContainer = (props) => {
 class RenderList extends React.Component{
   constructor(props){
     super(props);
-    this.state = {productArray: [], listTitle: ''}
+    this.state = {
+      productArray: [], 
+      listTitle: '',
+    }
   }
-  componentDidMount() {
-    const listPromise = AsyncStorage.getItem('listArray');
 
-    listPromise.then((content) => {
-      let parse = JSON.parse(content);
-      listContent = parse.products;
-      listTitle = parse.name;
-      this.setState({productArray: parse.products, listTitle: parse.name});
-    })
 
-  }
   render(){
+    console.log(this.props)
+
+    let pickList = this.props.list ? [this.props.list.pickList.products] : ['no products'];
+    let listName = this.props.list ? this.props.list.name : 'no name';
+    
     return (
       <View style={styles.listContainer}>
         <View style={styles.header}>
@@ -140,12 +143,15 @@ class RenderList extends React.Component{
         <View style={styles.userList}>
 
         <SectionList
-          renderItem={({item, index, section}) => <Text key={index}>{item.name}</Text>}
+          renderItem={({item, index, section}) => {
+          let data = item ? item[index].name : 'Loading';
+          return <Text key={index}>{data}</Text>}
+          }
           renderSectionHeader={({section: {title}}) => (
             <Text style={{fontWeight: 'bold'}}>{title}</Text>
           )}
           sections={[
-            {title: this.state.listTitle, data: this.state.productArray},
+            {title: listName, data: pickList},
           ]}
           keyExtractor={(item, index) => item + index}
         />
@@ -156,49 +162,18 @@ class RenderList extends React.Component{
     );
   }
 }
-const SmartScreen = (props) => {
-  if (props.screen == userContent.lists[2]) {
+
+class SmartScreen extends React.Component {
+  constructor(props) {
+    super(props)
+  }
+  render() {
     return (
-      <View style={styles.listContainer}>
-        <View style={styles.header}>
-          <Header
-            leftComponent = {<Icon name='shopping-cart' type='feather' color='#fff'/>}
-            centerComponent={{ text: 'Market Buddy', style: { color: '#fff', fontSize: 20 } }}
-            rightComponent={{ icon: 'menu', color: '#fff' }}
-          />
-        </View>
-        
-        <View style={styles.listCards}>
-        <View style={styles.userList}>
-        
-        <SectionList
-          sections={[
-            {title: 'Movie Snacks', data: ['Popcorn', 'Cheetos', 'Skittles', 'Liquid Honey', 'Pickles', 'M&M', 'Coke', 'Cris', 'Giovani', 'Leo', 'Dani', 'Sam']},
-          ]}
-          renderItem={({item}) => 
-            <Text style={styles.item}>
-              {item}
-              <Icon name='shopping-cart' type='feather' color='#fff'/>
-            </Text>}
-          renderSectionHeader={({section}) => <Text style={styles.sectionHeader}>{section.title}</Text>}
-          keyExtractor={(item, index) => index}
-        />
-        </View>
-        </View>
-     </View>
+
+      <RenderList list={this.props} />
+
     )  
-  } else if (props.screen == userContent.lists[1]) {
-    return (
-      // <Text>HEYO IT'S SCREEN B</Text>
-      <RenderList/>
-    )  
-  } else if (props.screen == userContent.lists[0]) {
-    return <RenderList/>
-  } else {
-    return (
-      <Text></Text>
-    )
-  }  
+  }
 }
 
 // =============== 2. MAIN ROUTER HOLDER ================ //
@@ -207,60 +182,71 @@ class MainRouterSwitch extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      currentScreen: ''
+      renderProductList: false,
+      currentScreen: '',
+      // checked: []
     }
     this.setScreen = this.setScreen.bind(this)
   }
-  setScreen(screen, listId) {
-    this.setState({
-      currentScreen: screen
-    })
+
+  setScreen(listId) {
+    this.props.selectList(listId);
+    this.setState({renderProductList: true})
   }
+
   render() {
+    console.log('MainRouterProps', this.props);
     return (
       <View style={styles.mainContainer}>
-        <ButtonContainer setScreen={this.setScreen} />
-        <SmartScreen screen={this.state.currentScreen} />
+      { this.state.renderProductList ? <SmartScreen pickList={this.props.pickList} screen={this.state.currentScreen}  /> : <ButtonContainer userList={this.props.userLists} setScreen={this.setScreen}/> }
       </View>
     )
   }
 }
 
-//  =============== INDIVIDUAL LIST ================== //
-
 // ============ 1. APP ============ //
 
-function AppPresenter({user, loggingIn, loginError, selectedListId, updatingList, selectList, attemptLogin}){
+function AppPresenter({user, lists, loggingIn, loginError, selectedListId, selectedListItems, updatingList, selectList, attemptLogin}){
+  // console.log("lists: ", lists);
   return (
     <View style={styles.container}>
-      {user ? <MainRouterSwitch/> : <LoginScreen attemptLogin={attemptLogin}/> }
+      {user ? <MainRouterSwitch  userLists={lists} selectList={selectList} pickList={selectedListItems}/> : <LoginScreen attemptLogin={attemptLogin}/> }
     </View>
   );
 }
 export default class App extends React.Component {
-  state = {
-    user: undefined,
-    loggingIn: false
+  constructor(props) {
+    super(props)
+    this.state = {
+      user: false,
+      loggingIn: false,
+      lists: '',
+      updatingList: false, 
+      selectedListItems: []
+    }
   }
+
   attemptLogin = (email, password) => {
     this.setState({loggingIn: true});
     login(email, password)
-      .then((user) => {
-        this.setState({user:user, loggingIn: false})
+      .then((data) => {
+       let user = data.user;
+        this.setState({user:user, loggingIn: false, lists: user.lists});
       }, ({error}) => {
-        this.setState({user: undefined, loggingIn: false, loginError: error})
+        console.log('in error');
+        this.setState({user: false, loggingIn: false, loginError: error})
       });
   }
   selectList = (listId) => {
     this.setState({selectedListId: listId, updatingList: true});
     getListFromTheInternet(listId)
-      .then((selectedListItems) => {
-        this.setState({updatingList: false, selectedListItems: selectedListItems});
+      .then((data) => {
+        this.setState({updatingList: false, selectedListItems: data});
       })
 
   }
   render() {
+    
     return <AppPresenter {...this.state} attemptLogin={this.attemptLogin} selectList={this.selectList}/>
   }
 }
-

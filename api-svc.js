@@ -20,6 +20,7 @@ export async function getListFromTheInternet(listId){
     const response = await get(url);
     return response.data;
   } catch(error){
+    throw error;
     return {error: 'Fuckin stupes'};
   }
 }
