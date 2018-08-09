@@ -10,7 +10,7 @@ export async function login(email, password){
     }});  
     return response.data;
   } catch(error){
-    return {error: 'You are dumb'};
+    return {error: 'No donut for you'};
   }
 }
 
@@ -21,6 +21,6 @@ export async function getListFromTheInternet(listId){
     return response.data;
   } catch(error){
     throw error;
-    return {error: 'Fuckin stupes'};
+    return {error: 'No beer for you'};
   }
 }

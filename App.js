@@ -14,7 +14,7 @@ import {login, getListFromTheInternet} from './api-svc';
 import NavBar from './components/Header';
 import ShoppingList from './components/UserLists';
 import BarcodeScanner from './components/Scanner';
-import renderIf from './components/RenderIf';
+// import UpdateList from './components/UserListUpdate';
 
 // ============== 2. LOGIN SWITCH =============== //
 // 
@@ -47,9 +47,7 @@ const options = {
   
   fields: {
       email: {
-          // placeholder: t.t('Email'),
           auto: 'placeholders',
-          // error: t.t('Email is empty'),
       },
       password: {
           // placeholder: t.t('Password'),
@@ -68,6 +66,8 @@ class LoginScreen extends React.Component {
     let value = {};
     value.email = 'root@root.com';
     value.password = 'root';
+    // value.email = '';
+    // value.password = '';
     this.props.attemptLogin(value.email, value.password);
   }
 
@@ -161,7 +161,6 @@ const ButtonContainer = (props) => {
 
             <Card
               title={u.name}
-              // image={require('./assets/checklist.png')}
               backgroundColor='#4f6dc1'>
 
               <Button
@@ -258,6 +257,7 @@ class SmartScreen extends React.Component {
     return (
       <ShoppingList list={this.props} />
       // <RenderList list={this.props} />
+      // <UpdateList />
 
     )  
   }
@@ -289,22 +289,6 @@ class MainRouterSwitch extends React.Component {
     )
   }
 }
-
-  // setScreen(screen) {
-  //   this.setState({
-  //     currentScreen: screen
-  //   })
-  // }
-
-//   render() {
-//     return (
-//       <View style={styles.mainContainer}>
-//         <ButtonContainer setScreen={this.setScreen} />
-//         <SmartScreen screen={this.state.currentScreen}  />
-//       </View>
-//     )
-//   }
-// }
 
 // ============ 1. APP ============ //
 

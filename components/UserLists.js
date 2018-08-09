@@ -12,7 +12,7 @@ import {
   ScrollView,
   TextInput
 } from 'react-native';
-import { Button, Icon, Card, ListItem, Header, Divider, CheckBox } from 'react-native-elements';
+import { Button, Icon, Card, ListItem, Header, Divider, CheckBox, List } from 'react-native-elements';
 import NavBar from './Header';
 import BarcodeScanner from './Scanner';
 
@@ -27,9 +27,7 @@ export default class ShoppingList extends React.Component {
       productArray: [],
       checked: [],
       listTitle: '',
-      // loading: false,
-      // seed: 1,
-      // error: null,
+     
     };
   }
 
@@ -53,47 +51,10 @@ export default class ShoppingList extends React.Component {
     } else {
       this.setState({ checked: checked.filter(a => a !== item) });
       console.log('inside checkitem', item)
-  
+      
     }
   };
 
-  // ======== PLAN B =============== //
-
-//   componentDidMount() {
-//     this.makeRemoteRequest();
-//   }
-
-//   makeRemoteRequest = () => {
-//     const { page, seed } = this.state;
-//     const url = `https://randomuser.me/api/?seed=${seed}&page=${page}&results=20`;
-//     this.setState({ loading: true });
-//     fetch(url)
-//       .then(res => res.json())
-//       .then(res => {
-//         this.setState({
-//           data: page === 1 ? res.results : [...this.state.data, ...res.results],
-//           error: res.error || null,
-//           loading: false,
-//           refreshing: false
-//         });
-//       })
-//       .catch(error => {
-//         this.setState({ error, loading: false });
-//       });
-//   };
-
-//   render() {
-//     return (
-//       <List>
-//       <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-//         <Text>Coming soon...</Text>
-//       </View>
-//       </List>
-//     );
-//   }
-// }
-
-//  ======== END OF PLAN B ========= //
 
   render() {
 
@@ -105,13 +66,18 @@ export default class ShoppingList extends React.Component {
         <NavBar />
         <TouchableHighlight>
           <View style={styles.scanner}>
-            {/* <Image source={require('./assets/camera.png')} /> */}
+            <Icon
+              raised
+              name='camera'
+              type='entypo'
+              color='#000'
+              onPress={() => this.openScanner()} />
             <Button
               backgroundColor='#e9ebf7'
               color='#000'
               accessibilityLabel="Update your product"
               onPress={() => this.openScanner() } 
-              title="Different price? Add the new price below and scan your product here to update it."
+              // title="Different price? Add the new price below and scan your product here to update it."
               style={styles.button}
               />
             {this.state.scannerOn && <BarcodeScanner /> }
@@ -129,8 +95,8 @@ export default class ShoppingList extends React.Component {
             style={{height: 42, borderColor: 'gray'}}
           /> */}
           <TextInput
-            placeholder={'New price here'}
-            style={{height: 42, borderColor: 'gray', borderWidth: 1, backgroundColor: '#e9ebf7', width: 120}}
+            placeholder={'  $$ NEW PRICE HERE'}
+            style={{height: 42, borderColor: 'gray', borderWidth: 1, backgroundColor: '#e9ebf7', width: 150}}
             onChangeText={(text) => this.setState({text})}
             value={this.state.text}
           />
@@ -149,9 +115,9 @@ export default class ShoppingList extends React.Component {
           <SafeAreaView>
             <ScrollView style={styles.scroll}>
 
+
               <SectionList
                 extraData={this.state}
-                
                 // sections={sections}
                 sections={[
                   {title: listName, data: pickList},
@@ -159,7 +125,6 @@ export default class ShoppingList extends React.Component {
                 // keyExtractor={item => item.title}
                 keyExtractor={(item, index) => item + index}
                 
-                // renderSectionHeader={({ section }) => (
                 renderSectionHeader={({section: {title}}) => (  
                   <TouchableOpacity onPress={() => this.onPress(section)}>
                     <View style={styles.sectionContainer}>
@@ -173,25 +138,46 @@ export default class ShoppingList extends React.Component {
 
                       let data = item ? item[index].name : 'Loading';
                       return <Text style={styles.titleText} key={index}>{data}</Text>
-                  
-                  // <View>
-                  //   <Collapsible
-                  //     key={item}
-                  //     collapsed={section.title !== this.state.activeSection}>
-                  //     <ListItem 
-                  //       title={
-                  //         <CheckBox
-                  //           title={item.title.name}
-                  //           onPress={() => this.checkItem(item)}
-                  //           checked={this.state.checked.includes(item)}
+                  }
+
+
+
+                      // ==================== TRY TO IMPLEMENT LIST ===================== //
+                  //     renderItem={({ item, index, section }) => (
+                  //      <List containerStyle={{marginBottom: 20}}>
+                  //     {
+                  //       this.props.map((item, i) => (
+                  //         <ListItem
+                  //           // roundAvatar
+                  //           // avatar={{uri:l.avatar_url}}
+                  //           key={i}
+                  //           title={item.name}
                   //         />
-                  //       }
-                  //       badge={{ value: `\$ ${item.price.toFixed(2)}`, textStyle: { color: 'black' }, containerStyle: { alignSelf: 'center', backgroundColor: 'grey', margin: 20 } }}
-                  //       hideChevron={true}                           
-                  //     />
-                  //   </Collapsible>
-                  // </View>
-                }
+                  //       ))
+                  //     }
+                  //   </List>
+                  // )
+                  
+// ============== OR THIS =====================
+                    // renderItem={({ item, section:{data.products} }) => (
+                //   
+                //     key={item}
+
+                //     <ListItem 
+                //       title={
+                //         <CheckBox
+                //           title={item.name}
+                //           onPress={() => this.checkItem(item)}
+                //           checked={this.state.checked.includes(item)}
+                //         />
+                //       }
+                //       badge={{ value: `\$ ${item.price.toFixed(2)}`, textStyle: { color: 'black' }, containerStyle: { alignSelf: 'center', backgroundColor: 'grey', margin: 20 } }}
+                //       hideChevron={true}                           
+                //     />
+                // )}
+
+                 
+                
               }
 
               
@@ -250,7 +236,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#3f4bba',
+    backgroundColor: '#3e5491',
     top: 0,
     left: 0,
     right: 0,
@@ -280,16 +266,19 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: 'rgba(0, 0, 0, 0.12)',
     backgroundColor: '#efefef',
+    backgroundColor: '#fff',
+    // flexDirection: 'row'
   },
   sectionTitle: {
     color: 'black',
     fontSize: 20,
-    marginBottom: 8,
+    marginBottom: 20,
     marginLeft: 30,
     marginRight: 30,
     marginTop: 24,
     opacity: 0.8,
-    width: 160
+    width: 160,
+    fontWeight: 'bold'
   },
   scanner: {
     backgroundColor: '#e9ebf7',
@@ -298,7 +287,9 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 10,
     padding: 20,
-    
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button: {
     position: 'relative',
@@ -311,7 +302,7 @@ const styles = StyleSheet.create({
   inputText: {
     flexDirection: 'row',
     height: 40,
-    marginBottom: 8
+    marginBottom: 10
   },
   titleText: {
     fontSize: 20,
