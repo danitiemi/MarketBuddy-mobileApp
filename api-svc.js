@@ -5,7 +5,7 @@ export async function login(email, password){
   //  .then((response) => return response.data)
   //  .catch(() = ({error: 'You are dumb'}))
   try {
-    const response = await post('http://192.168.88.120:7000/users/login', {user: {
+    const response = await post('http://10.75.252.45:7000/users/login', {user: {
       email, password
     }});  
     return response.data;
@@ -15,7 +15,7 @@ export async function login(email, password){
 }
 
 export async function getListFromTheInternet(listId){
-  let url = 'http://192.168.88.120:7000/lists/' + listId;
+  let url = 'http://10.75.252.45:7000/lists/' + listId;
   try {
     const response = await get(url);
     return response.data;

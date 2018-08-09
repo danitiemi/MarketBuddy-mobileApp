@@ -12,9 +12,9 @@ import styles from './components/Styles';
 import {login, getListFromTheInternet} from './api-svc';
 
 import NavBar from './components/Header';
-import ShoppingList from './components/UserLists';
+// import ShoppingList from './components/UserLists';
 import BarcodeScanner from './components/Scanner';
-// import UpdateList from './components/UserListUpdate';
+import UpdateList from './components/UserListUpdate';
 
 // ============== 2. LOGIN SWITCH =============== //
 // 
@@ -153,6 +153,8 @@ const ButtonContainer = (props) => {
   return (
     <View style={styles.mainContainer}>
       <NavBar />
+      <View style={styles.containerCard}>
+
       <View style={styles.listCards}>
         <ScrollView>
         { props.userList.map((u, i) => {
@@ -177,6 +179,7 @@ const ButtonContainer = (props) => {
       </ScrollView>
       </View>
     </View>
+  </View>
   )
 }
 
@@ -255,9 +258,9 @@ class SmartScreen extends React.Component {
   }
   render() {
     return (
-      <ShoppingList list={this.props} />
+      // <ShoppingList list={this.props} />
       // <RenderList list={this.props} />
-      // <UpdateList />
+      <UpdateList />
 
     )  
   }

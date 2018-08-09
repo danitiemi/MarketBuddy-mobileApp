@@ -105,8 +105,8 @@ export default class ShoppingList extends React.Component {
             color='#000'
             accessibilityLabel="Different price? Add the new price above and scan your product here to update it."
             onPress={() => this.openScanner() } 
-            title="SEND"
-            style={{height: 42, borderColor: 'gray'}}
+            title="Ok"
+            style={{height: 40, borderColor: 'gray'}}
           /> 
         </View>
 

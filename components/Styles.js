@@ -19,6 +19,12 @@ export default StyleSheet.create({
       alignItems: 'center',
       // justifyContent: 'center',
     },
+    containerCard: {
+      flex: 1,
+      // paddingTop: 30,
+      alignItems: 'center',
+      justifyContent: 'center',
+    },
     container1: {
       backgroundColor: '#fff',
       alignItems: 'center',
@@ -81,7 +87,7 @@ export default StyleSheet.create({
       backgroundColor: '#e9ebf7',
       alignItems: 'center',
       justifyContent: 'center',
-      // marginTop: 30,
+      marginTop: 30,
       width: 400,
       // height: 100
     },
